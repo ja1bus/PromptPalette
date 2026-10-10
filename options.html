@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title data-pp-text="m135">PromptPalette Settings</title><link rel="stylesheet" href="options.css"></head>
+<body><main><h1><span data-pp-text="m134">PromptPalette</span></h1><p><span data-pp-text="m136">バージョン </span><span id="version"></span> · © ja1bus</p>
+<label>Language / 表示言語 <select id="language"><option value="auto">Auto / 自動</option><option value="en">English</option><option value="ja">日本語</option></select></label><p id="language-notice" role="status"></p>
+<form id="settings">
+<h2><span data-pp-text="m032">プリセット</span></h2><label><span data-pp-text="m137">編集するプリセット </span><select id="preset"></select></label>
+<div class="actions"><button id="add" type="button"><span data-pp-text="m138">追加</span></button><button id="duplicate" type="button"><span data-pp-text="m139">複製</span></button><button id="delete" type="button"><span data-pp-text="m140">削除</span></button></div>
+<label><span data-pp-text="m141">名前 </span><input id="name" maxlength="80" required></label>
+<label class="check"><input id="shared" type="checkbox"><span data-pp-text="m142">ChatGPTとGeminiで同じ本文を使う</span></label>
+<label for="chatgpt-prompt"><span data-pp-text="m143">ChatGPT用プロンプト（共通の場合は両サイトで使用）</span></label><textarea id="chatgpt-prompt" rows="9" maxlength="20000"></textarea>
+<label for="gemini-prompt"><span data-pp-text="m144">Gemini用プロンプト</span></label><textarea id="gemini-prompt" rows="7" maxlength="20000"></textarea>
+<label><span data-pp-text="m033">Geminiのアスペクト比 </span><select id="ratio"><option value="" data-pp-text="m054">指定なし</option><option>1:1</option><option>9:16</option><option>3:4</option><option>4:3</option><option>16:9</option></select></label>
+<p><span data-pp-text="m145">指定なしでは画面の比率を操作しません。既に指定が残っている場合は画面で確認してください。</span></p>
+<label><span data-pp-text="m146">既定のプリセット </span><select id="default-preset"></select></label>
+<h2><span data-pp-text="m147">このPCの動作</span></h2><label><span data-pp-text="m148">アイコンの入力元 </span><select id="source"><option value="clipboard" data-pp-text="m149">クリップボード</option><option value="file" data-pp-text="m150">画像ファイル選択</option></select></label>
+<label class="check"><input id="chatgpt-auto" type="checkbox"><span data-pp-text="m151">ChatGPT：入力後に自動送信する</span></label>
+<label class="check"><input id="gemini-auto" type="checkbox"><span data-pp-text="m152">Gemini：入力後に自動送信する</span></label>
+<p><span data-pp-text="m153">初期値OFF。OFFでは画像取得後にプリセット・比率を選び「準備する」を押します。ONでは既定プリセットで1回だけ送信します。ファイル入力は「画像ファイルを選ぶ」の操作が必要です。</span></p>
+<label class="check"><input id="manual-paste" type="checkbox"><span data-pp-text="m154">クリップボード添付に実際のCtrl+Vを使う</span></label>
+<h2><span data-pp-text="m155">複数PCの同期</span></h2><label class="check"><input id="sync" type="checkbox"><span data-pp-text="m156">設定を複数PCで同期する</span></label>
+<p><span data-pp-text="m157">初期値OFF。同じGoogleアカウント・同じ拡張機能ID・Chromeの同期有効が必要です。プリセットと既定選択をGoogleの同期サービスに保存します。画像・自動送信・入力元・診断は同期しません。</span></p>
+<p data-pp-text="m175">同期のON/OFFはこのPCに即時保存します。ONにするだけでは送信しません。Chrome起動時・設定表示時・実行前と、更新が届いたときに取り込みます。</p>
+<button id="sync-pull" type="button" data-pp-text="m176">同期済みのプリセットを取り込む</button>
+<p id="sync-status" role="status"></p>
+<p data-pp-text="m177">取り込みはChromeがこのPCに受信済みの内容を読みます。Googleからの取得を強制することはできません。未保存の編集は自動で置き換えません。</p>
+<details><summary data-pp-text="m178">補助操作（初回登録・再送・復元）</summary>
+<button id="sync-push" type="button" data-pp-text="m179">このPCのプリセットを同期先へ保存</button>
+<button id="sync-restore" type="button" data-pp-text="m180">直前のプリセットを復元</button>
+<p data-pp-text="m181">初回登録・再送は同期先を置き換えます。復元は直前の1世代に戻し、このPCの同期をOFFにします。</p></details>
+<p data-pp-text="m161">同期OFFにすると、このPCのプリセットを保持し、同期先は削除しません。画像・自動送信・入力元・表示言語・診断は同期しません。</p>
+<button type="submit"><span data-pp-text="m162">すべて保存</span></button><p id="saved" role="status" aria-live="polite"></p></form>
+<h2><span data-pp-text="m163">バックアップ・移行</span></h2><button id="export" type="button"><span data-pp-text="m164">設定をエクスポート</span></button>
+<label><span data-pp-text="m165">設定ファイルをインポート </span><input id="import" type="file" accept="application/json,.json"></label>
+<p><span data-pp-text="m166">インポートは編集画面への取り込みです。「すべて保存」で確定します。自動送信はOFF、同期はOFFに戻します。書き出したファイルにはプロンプト本文が含まれます。</span></p>
+<h2><span data-pp-text="m167">ショートカット</span></h2><button id="open-shortcuts" type="button"><span data-pp-text="m168">ショートカット設定を開く</span></button><p><code>chrome://extensions/shortcuts</code></p><p id="shortcut-notice" role="status"></p>
+<p><span data-pp-text="m169">クリップボード実行：初期候補 Ctrl+Shift+Y。ファイル選択実行：初期値未割り当て。Chromeを前面にし対象のチャットを選択してください。2つのキーは独立して変更できます。</span></p>
+<h2><span data-pp-text="m170">診断</span></h2><p id="last-notice"></p><button id="diagnostic" type="button"><span data-pp-text="m171">診断情報をコピー</span></button><textarea id="diagnostic-text" rows="4" readonly aria-label="診断情報" data-pp-aria-label="m172"></textarea>
+<p><span data-pp-text="m173">診断にはバージョンと停止段階のみ含めます。画像・本文・チャットURLは含めません。クリップボード画像を上書きしたくない場合はコピーしないでください。</span></p>
+<p><span data-pp-text="m174">画像は実行時のみ扱い保存しません。独自サーバーへの送信はありません。添付・送信先は現在のChatGPTまたはGeminiです。各サービスのアカウント・利用条件に従います。</span></p>
+</main><script src="locale-data.js"></script><script src="i18n.js"></script><script src="settings.js"></script><script src="options.js"></script></body></html>

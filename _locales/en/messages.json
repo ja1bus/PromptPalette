@@ -1,0 +1,617 @@
+{
+  "m000": {
+    "message": "Not started"
+  },
+  "m001": {
+    "message": "Settings"
+  },
+  "m002": {
+    "message": "Cancel"
+  },
+  "m003": {
+    "message": "Close"
+  },
+  "m004": {
+    "message": "I checked the remaining draft — unlock"
+  },
+  "m005": {
+    "message": "Cancelled by the user."
+  },
+  "m006": {
+    "message": "Cancelled."
+  },
+  "m007": {
+    "message": "Unlocked. Review and clear the remaining text and attachments before running again."
+  },
+  "m008": {
+    "message": "The chat changed. Check the draft in the original chat."
+  },
+  "m009": {
+    "message": "The chat composer was not found. Open a regular chat. If the UI changed, check the site adapter."
+  },
+  "m010": {
+    "message": "A response is being generated, or the composer is unavailable. Wait and try again."
+  },
+  "m011": {
+    "message": "The composer already contains text or attachments. Review and clear them before running."
+  },
+  "m012": {
+    "message": "Another tool is selected. Deselect it before running."
+  },
+  "m013": {
+    "message": "\nChecks: {0}"
+  },
+  "m014": {
+    "message": "\nCould not obtain diagnostic checks."
+  },
+  "m015": {
+    "message": "The operation timed out. Check the page and your connection.{0}"
+  },
+  "m016": {
+    "message": "2/6 Could not read the clipboard. Focus the chat tab and click [Read image and continue]."
+  },
+  "m017": {
+    "message": "Read image and continue"
+  },
+  "m018": {
+    "message": "Clipboard reading timed out."
+  },
+  "m019": {
+    "message": "The page is not focused."
+  },
+  "m020": {
+    "message": "No supported image is on the clipboard. Copy an image using Win+Shift+S."
+  },
+  "m021": {
+    "message": "Multiple images were found. Copy exactly one image."
+  },
+  "m022": {
+    "message": "The image is empty or exceeds 20 MiB. Copy a smaller image."
+  },
+  "m023": {
+    "message": "3/6 {0}Click [Wait for paste], then press Ctrl+V once in the composer. Only images are accepted."
+  },
+  "m024": {
+    "message": "Clipboard access was denied. "
+  },
+  "m025": {
+    "message": "Manual attachment mode. "
+  },
+  "m026": {
+    "message": "Wait for paste"
+  },
+  "m027": {
+    "message": "The pasted content is not one supported image. Copy the image again."
+  },
+  "m028": {
+    "message": "Choose an image file. {0}\nOne PNG, JPEG or WebP image, up to 20 MiB. Cancel to exit."
+  },
+  "m029": {
+    "message": "Choose image file"
+  },
+  "m030": {
+    "message": "Choose one supported image up to 20 MiB."
+  },
+  "m031": {
+    "message": "Prepare without sending. Review the preset and aspect ratio, then click [Prepare].{0}"
+  },
+  "m032": {
+    "message": "Presets"
+  },
+  "m033": {
+    "message": "Gemini aspect ratio"
+  },
+  "m034": {
+    "message": "Aspect ratio: unspecified"
+  },
+  "m035": {
+    "message": "Prompt to use"
+  },
+  "m036": {
+    "message": "Image for this run"
+  },
+  "m037": {
+    "message": "Prepare"
+  },
+  "m038": {
+    "message": "The prompt is empty. Save a prompt in Settings."
+  },
+  "m039": {
+    "message": "Aspect ratio"
+  },
+  "m040": {
+    "message": "Setting Gemini aspect ratio to {0}."
+  },
+  "m041": {
+    "message": "The aspect ratio control was not found. Check the page and gemini-adapter.js."
+  },
+  "m042": {
+    "message": "The requested aspect ratio is unavailable."
+  },
+  "m043": {
+    "message": "A draft may remain from the previous run. Check the page. No automatic retry will occur."
+  },
+  "m044": {
+    "message": "The overall time limit of 360 seconds was exceeded."
+  },
+  "m045": {
+    "message": "Preflight checks"
+  },
+  "m046": {
+    "message": "1/6 Checking settings and the composer."
+  },
+  "m047": {
+    "message": "No prompt is configured. Save one in [Settings]."
+  },
+  "m048": {
+    "message": "{0} Stopped without automatic sending."
+  },
+  "m049": {
+    "message": "The default preset has no prompt. Save one in [Settings]."
+  },
+  "m050": {
+    "message": "File selection"
+  },
+  "m051": {
+    "message": "Clipboard reading"
+  },
+  "m052": {
+    "message": "2/6 Getting the image."
+  },
+  "m053": {
+    "message": "The image will be sent automatically after selection. Preset: {0}; aspect ratio: {1}"
+  },
+  "m054": {
+    "message": "Unspecified"
+  },
+  "m055": {
+    "message": "Not applicable"
+  },
+  "m056": {
+    "message": "You will review the settings after selection."
+  },
+  "m057": {
+    "message": "File selection cancelled. Nothing was attached, entered or sent."
+  },
+  "m058": {
+    "message": "Review before running"
+  },
+  "m059": {
+    "message": "Image attachment"
+  },
+  "m060": {
+    "message": "3/6 Attaching the image. Do not edit the composer during this operation."
+  },
+  "m061": {
+    "message": "Could not identify the image upload input. Check adapter.js if the UI changed."
+  },
+  "m062": {
+    "message": "File selection requires automatic attachment. Turn off manual Ctrl+V in Settings."
+  },
+  "m063": {
+    "message": "Attachment verification"
+  },
+  "m064": {
+    "message": "4/6 Verifying the attachment."
+  },
+  "m065": {
+    "message": "The text changed during attachment. The existing text has been preserved."
+  },
+  "m066": {
+    "message": "Image upload failed. Check the remaining attachment."
+  },
+  "m067": {
+    "message": "Image creation mode"
+  },
+  "m068": {
+    "message": "5/6 Selecting image creation mode."
+  },
+  "m069": {
+    "message": "Could not open the tools menu. The attachment has been preserved."
+  },
+  "m070": {
+    "message": "Image creation mode is unavailable. Check your account eligibility."
+  },
+  "m071": {
+    "message": "Text appeared after mode selection. Stopped without overwriting it."
+  },
+  "m072": {
+    "message": "Could not verify the attachment after switching mode. Check the page."
+  },
+  "m073": {
+    "message": "Prompt entry"
+  },
+  "m074": {
+    "message": "6/6 Entering the saved prompt."
+  },
+  "m075": {
+    "message": "The composer changed during final checks. Stopped without sending."
+  },
+  "m076": {
+    "message": "Sending"
+  },
+  "m077": {
+    "message": "Cannot send. Focus the chat tab and review its contents."
+  },
+  "m078": {
+    "message": "Sending the verified image and prompt exactly once."
+  },
+  "m079": {
+    "message": "The tab left the target site after sending. Check the chat history."
+  },
+  "m080": {
+    "message": "Could not verify this image and prompt in a new chat message. Check the chat history."
+  },
+  "m081": {
+    "message": "The sent message was reflected on the page. Check the image generation result on the site."
+  },
+  "m082": {
+    "message": "Ready. Review the image, image creation mode and prompt. Nothing has been sent."
+  },
+  "m083": {
+    "message": "Send was clicked once. It will not be repeated even if the result is unknown. Check the chat history."
+  },
+  "m084": {
+    "message": "Attachment was attempted and may appear later. Review the attachments and text yourself."
+  },
+  "m085": {
+    "message": "No attachment operation was performed."
+  },
+  "m086": {
+    "message": "Text remains in the composer. "
+  },
+  "m087": {
+    "message": "No composer text is currently detected. "
+  },
+  "m088": {
+    "message": "Image creation mode is selected."
+  },
+  "m089": {
+    "message": "Mode selection was attempted. Check the page."
+  },
+  "m090": {
+    "message": "Stopped at {0}: {1}\n{2}\n{3}{4}\nRemaining content will not be deleted or overwritten."
+  },
+  "m091": {
+    "message": "[PromptPalette] Stopped at:"
+  },
+  "m092": {
+    "message": "Provide between 1 and 20 presets."
+  },
+  "m093": {
+    "message": "Invalid preset format. Each prompt must be at most 20,000 characters."
+  },
+  "m094": {
+    "message": "The default preset does not exist."
+  },
+  "m095": {
+    "message": "Default"
+  },
+  "m096": {
+    "message": "Sync capacity exceeded. Turn off sync."
+  },
+  "m097": {
+    "message": "Sync capacity exceeded. Reduce the presets or turn off sync."
+  },
+  "m098": {
+    "message": "Invalid sync data format."
+  },
+  "m099": {
+    "message": "Sync data is incomplete. Wait a moment and reload."
+  },
+  "m100": {
+    "message": "Sync saving is incomplete. This PC's settings are preserved. Save again or turn off sync in Settings."
+  },
+  "m101": {
+    "message": "No synced settings were found. Using this PC's saved settings."
+  },
+  "m102": {
+    "message": "Could not read synced settings. Using this PC's saved settings. Check Settings."
+  },
+  "m103": {
+    "message": "Invalid device settings."
+  },
+  "m104": {
+    "message": "Settings changed in another window or PC. Export your edits, then reload."
+  },
+  "m105": {
+    "message": "Saved on this PC, but sync saving failed. Check capacity and Chrome sync settings. Enabling sync has not completed."
+  },
+  "m106": {
+    "message": "(Unnamed)"
+  },
+  "m107": {
+    "message": "Settings were loaded from Chrome sync storage."
+  },
+  "m108": {
+    "message": "Sync is off: settings are saved on this PC."
+  },
+  "m109": {
+    "message": "You can save up to 20 presets."
+  },
+  "m110": {
+    "message": "{0} copy"
+  },
+  "m111": {
+    "message": "New preset"
+  },
+  "m112": {
+    "message": "Remove this preset from the editor? You can reload to restore it before saving."
+  },
+  "m113": {
+    "message": "Saved to Chrome sync storage."
+  },
+  "m114": {
+    "message": "Saved on this PC."
+  },
+  "m115": {
+    "message": "The settings file is too large."
+  },
+  "m116": {
+    "message": "This settings file is not supported."
+  },
+  "m117": {
+    "message": "Imported into the editor. Auto-send and sync are off. Save to apply."
+  },
+  "m118": {
+    "message": "Enter chrome://extensions/shortcuts in Chrome's address bar."
+  },
+  "m119": {
+    "message": "Diagnostics copied."
+  },
+  "m120": {
+    "message": "Select the diagnostics text and press Ctrl+C to copy."
+  },
+  "m121": {
+    "message": "Synced settings changed. Your edits are preserved. Export them before reloading if needed."
+  },
+  "m122": {
+    "message": "No operation has been recorded."
+  },
+  "m123": {
+    "message": "Could not load settings. Check extension errors."
+  },
+  "m124": {
+    "message": "The composer changed or already contains text."
+  },
+  "m125": {
+    "message": "Text entry was rejected. Paste the prompt manually."
+  },
+  "m126": {
+    "message": "Text entry was rejected. Check the composer."
+  },
+  "m127": {
+    "message": "Prompt match={0} (entered: {1} characters; expected: {2}), send enabled={3}, image mode={4}, attachment ready={5}"
+  },
+  "m128": {
+    "message": "Prompt match={0}, image mode={1}, attachment ready={2}"
+  },
+  "m129": {
+    "message": "Image count={0}, image loaded={1}, uploading={2}, send button found={3}, send enabled={4}"
+  },
+  "m130": {
+    "message": "yes"
+  },
+  "m131": {
+    "message": "no"
+  },
+  "m132": {
+    "message": "Focus a ChatGPT or Gemini chat tab before running."
+  },
+  "m133": {
+    "message": "Could not start. Review any remaining draft, then reload the chat page and run again."
+  },
+  "m134": {
+    "message": "PromptPalette"
+  },
+  "m135": {
+    "message": "PromptPalette Settings"
+  },
+  "m136": {
+    "message": "Version"
+  },
+  "m137": {
+    "message": "Preset to edit"
+  },
+  "m138": {
+    "message": "Add"
+  },
+  "m139": {
+    "message": "Duplicate"
+  },
+  "m140": {
+    "message": "Delete"
+  },
+  "m141": {
+    "message": "Name"
+  },
+  "m142": {
+    "message": "Use the same prompt for ChatGPT and Gemini"
+  },
+  "m143": {
+    "message": "ChatGPT prompt (used for both sites when shared)"
+  },
+  "m144": {
+    "message": "Gemini prompt"
+  },
+  "m145": {
+    "message": "Unspecified leaves the page's aspect ratio unchanged. Check the page if a ratio is already selected."
+  },
+  "m146": {
+    "message": "Default preset"
+  },
+  "m147": {
+    "message": "Device settings"
+  },
+  "m148": {
+    "message": "Input source for the toolbar icon"
+  },
+  "m149": {
+    "message": "Clipboard"
+  },
+  "m150": {
+    "message": "Image file picker"
+  },
+  "m151": {
+    "message": "ChatGPT: send automatically after preparation"
+  },
+  "m152": {
+    "message": "Gemini: send automatically after preparation"
+  },
+  "m153": {
+    "message": "Off by default. When off, choose a preset and ratio after getting the image, then click Prepare. When on, the default preset is sent once. File input requires selecting a file."
+  },
+  "m154": {
+    "message": "Use a real Ctrl+V paste for clipboard attachments"
+  },
+  "m155": {
+    "message": "Sync across PCs"
+  },
+  "m156": {
+    "message": "Sync settings across PCs"
+  },
+  "m157": {
+    "message": "Off by default. Requires the same Google account and extension ID, with Chrome sync enabled. Presets and the default selection are stored in Google's sync service. Images, auto-send, input source and diagnostics are not synced."
+  },
+  "m158": {
+    "message": "When enabling sync"
+  },
+  "m159": {
+    "message": "Upload this PC's presets to sync"
+  },
+  "m160": {
+    "message": "Import presets from sync"
+  },
+  "m161": {
+    "message": "Turning sync off keeps presets on this PC and does not delete synced data. Images, auto-send, input source, language and diagnostics are not synced."
+  },
+  "m162": {
+    "message": "Save all settings"
+  },
+  "m163": {
+    "message": "Backup and migration"
+  },
+  "m164": {
+    "message": "Export settings"
+  },
+  "m165": {
+    "message": "Import settings file"
+  },
+  "m166": {
+    "message": "Import loads settings into the editor. Click Save all settings to apply. Auto-send and sync are turned off. Exported files contain your prompts."
+  },
+  "m167": {
+    "message": "Keyboard shortcuts"
+  },
+  "m168": {
+    "message": "Open keyboard shortcut settings"
+  },
+  "m169": {
+    "message": "Clipboard: suggested shortcut Ctrl+Shift+Y. File picker: unassigned by default. Focus Chrome and select the chat tab. You can change each shortcut independently."
+  },
+  "m170": {
+    "message": "Diagnostics"
+  },
+  "m171": {
+    "message": "Copy diagnostics"
+  },
+  "m172": {
+    "message": "Diagnostics"
+  },
+  "m173": {
+    "message": "Diagnostics contain version and operation status, not images, prompts or chat URLs. Copying diagnostics replaces your clipboard contents."
+  },
+  "m174": {
+    "message": "Images are used only during a run and are not stored. No data is sent to our own servers. Attachments and prompts go to the current ChatGPT or Gemini chat, subject to that service's account and usage terms."
+  },
+  "extensionName": {
+    "message": "PromptPalette"
+  },
+  "extensionDescription": {
+    "message": "Prepare image creation in ChatGPT and Gemini with clipboard images, files and reusable prompt presets."
+  },
+  "actionTitle": {
+    "message": "PromptPalette: run with the default input source"
+  },
+  "clipboardCommand": {
+    "message": "Run with a clipboard image"
+  },
+  "fileCommand": {
+    "message": "Choose an image file and run"
+  },
+  "m175": {
+    "message": "The switch is saved immediately on this PC. Turning it on does not upload presets. Updates are imported at startup, when opening Settings, before running and when received."
+  },
+  "m176": {
+    "message": "Import synced presets"
+  },
+  "m177": {
+    "message": "Import reads data already received by Chrome on this PC. It cannot force a download from Google. Unsaved edits are not replaced automatically."
+  },
+  "m178": {
+    "message": "More actions (initial upload, retry, restore)"
+  },
+  "m179": {
+    "message": "Upload presets from this PC"
+  },
+  "m180": {
+    "message": "Restore previous presets"
+  },
+  "m181": {
+    "message": "Upload replaces synced presets. Restore returns to the previous saved copy and turns sync off on this PC."
+  },
+  "m182": {
+    "message": "Sync writing is incomplete. Settings on this PC are preserved. Retry from More actions."
+  },
+  "m183": {
+    "message": "No synced data has arrived yet. Use More actions for the initial upload."
+  },
+  "m184": {
+    "message": "Cannot import synced data. If data is incomplete, it will be checked again on arrival. Settings on this PC are preserved."
+  },
+  "m185": {
+    "message": "Synced data has changed. Export your edits, import synced presets, then save again."
+  },
+  "m186": {
+    "message": "Saved on this PC, but writing to Chrome sync storage failed. Retry from More actions."
+  },
+  "m187": {
+    "message": "There are no presets to restore."
+  },
+  "m188": {
+    "message": "Sync is on: saved preset changes are shared and received updates are imported automatically."
+  },
+  "m189": {
+    "message": "Saved on this PC and written to Chrome sync storage. Chrome handles delivery to other PCs."
+  },
+  "m190": {
+    "message": "Enabling sync and importing discards unsaved preset and PC setting edits. Continue?"
+  },
+  "m191": {
+    "message": "Sync is on for this PC. Enabling it alone does not upload presets."
+  },
+  "m192": {
+    "message": "Sync is off for this PC."
+  },
+  "m193": {
+    "message": "Discard unsaved edits or pending changes and replace them with synced presets?"
+  },
+  "m194": {
+    "message": "Imported synced presets."
+  },
+  "m195": {
+    "message": "There are no updates to import."
+  },
+  "m196": {
+    "message": "Turn on sync, save the presets in this editor and replace synced presets? Use for initial upload or retry. Continue?"
+  },
+  "m197": {
+    "message": "Restore presets from before the last save or import and turn sync off on this PC? Unsaved edits will be discarded. Continue?"
+  },
+  "m198": {
+    "message": "Restored previous presets. Sync is off."
+  },
+  "m199": {
+    "message": "Synced data has changed. Your edits are preserved. Use the import button to apply the update."
+  }
+}
