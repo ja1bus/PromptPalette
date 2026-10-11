@@ -37,10 +37,6 @@ globalThis.PPMessageCatalog = {
     "ja": "チャットの移動を検出しました。元のチャットの下書きを確認してください。",
     "en": "The chat changed. Check the draft in the original chat."
   },
-  "m009": {
-    "ja": "チャット入力欄が見つかりません。通常のChat画面を開いてください。UI変更時はadapter.jsを確認してください。",
-    "en": "The chat composer was not found. Open a regular chat. If the UI changed, check the site adapter."
-  },
   "m010": {
     "ja": "回答生成中、または入力できない状態です。終了後に実行してください。",
     "en": "A response is being generated, or the composer is unavailable. Wait and try again."
@@ -165,10 +161,6 @@ globalThis.PPMessageCatalog = {
     "ja": "Geminiのアスペクト比を{0}に設定しています。",
     "en": "Setting Gemini aspect ratio to {0}."
   },
-  "m041": {
-    "ja": "アスペクト比の操作が見つかりません。画面とgemini-adapter.jsを確認してください。",
-    "en": "The aspect ratio control was not found. Check the page and gemini-adapter.js."
-  },
   "m042": {
     "ja": "指定したアスペクト比を選択できません。",
     "en": "The requested aspect ratio is unavailable."
@@ -244,14 +236,6 @@ globalThis.PPMessageCatalog = {
   "m060": {
     "ja": "3/6 画像を添付しています。処理中は入力欄を操作しないでください。",
     "en": "3/6 Attaching the image. Do not edit the composer during this operation."
-  },
-  "m061": {
-    "ja": "画像用ファイル入力を特定できません。UI変更時はadapter.jsを確認してください。",
-    "en": "Could not identify the image upload input. Check adapter.js if the UI changed."
-  },
-  "m062": {
-    "ja": "ファイル選択には自動添付方式が必要です。設定のCtrl+V方式をOFFにしてください。",
-    "en": "File selection requires automatic attachment. Turn off manual Ctrl+V in Settings."
   },
   "m063": {
     "ja": "添付完了確認",
@@ -337,18 +321,6 @@ globalThis.PPMessageCatalog = {
     "ja": "送信操作は1回実行済みです。送信結果が不明でも自動再送はしません。履歴を確認してください。",
     "en": "Send was clicked once. It will not be repeated even if the result is unknown. Check the chat history."
   },
-  "m084": {
-    "ja": "添付操作済みです。画像が後から反映される場合もあります。添付・入力文を自分で確認してください。",
-    "en": "Attachment was attempted and may appear later. Review the attachments and text yourself."
-  },
-  "m085": {
-    "ja": "添付操作は実行していません。",
-    "en": "No attachment operation was performed."
-  },
-  "m086": {
-    "ja": "入力文が残っています。",
-    "en": "Text remains in the composer. "
-  },
   "m087": {
     "ja": "現在、入力文は検出されていません。",
     "en": "No composer text is currently detected. "
@@ -360,10 +332,6 @@ globalThis.PPMessageCatalog = {
   "m089": {
     "ja": "モード選択を試みました。画面を確認してください。",
     "en": "Mode selection was attempted. Check the page."
-  },
-  "m090": {
-    "ja": "{0}で停止：{1}\n{2}\n{3}{4}\n残った内容を削除・上書きしません。",
-    "en": "Stopped at {0}: {1}\n{2}\n{3}{4}\nRemaining content will not be deleted or overwritten."
   },
   "m091": {
     "ja": "[CGCI] 停止段階:",
@@ -385,57 +353,13 @@ globalThis.PPMessageCatalog = {
     "ja": "標準",
     "en": "Default"
   },
-  "m096": {
-    "ja": "同期容量を超えます。同期をOFFにしてください。",
-    "en": "Sync capacity exceeded. Turn off sync."
-  },
-  "m097": {
-    "ja": "同期容量を超えます。プリセットを減らすか、同期をOFFにしてください。",
-    "en": "Sync capacity exceeded. Reduce the presets or turn off sync."
-  },
-  "m098": {
-    "ja": "同期データの形式が不正です。",
-    "en": "Invalid sync data format."
-  },
-  "m099": {
-    "ja": "同期データを受信中です。しばらくして再読み込みしてください。",
-    "en": "Sync data is incomplete. Wait a moment and reload."
-  },
-  "m100": {
-    "ja": "同期への保存が未完了です。このPCの設定を保持しています。設定画面で再保存または同期OFFを選んでください。",
-    "en": "Sync saving is incomplete. This PC's settings are preserved. Save again or turn off sync in Settings."
-  },
-  "m101": {
-    "ja": "同期設定がありません。このPCの保存済み設定を使用します。",
-    "en": "No synced settings were found. Using this PC's saved settings."
-  },
-  "m102": {
-    "ja": "同期を読み取れません。このPCの保存済み設定を使用します。設定画面で確認してください。",
-    "en": "Could not read synced settings. Using this PC's saved settings. Check Settings."
-  },
   "m103": {
     "ja": "PC設定が不正です。",
     "en": "Invalid device settings."
   },
-  "m104": {
-    "ja": "別の画面・PCで設定が更新されました。エクスポートで編集中の内容を保存し、再読み込みしてください。",
-    "en": "Settings changed in another window or PC. Export your edits, then reload."
-  },
-  "m105": {
-    "ja": "このPCには保存しましたが、同期への保存に失敗しました。容量・Chromeの同期設定を確認してください。同期ONへの切替は完了していません。",
-    "en": "Saved on this PC, but sync saving failed. Check capacity and Chrome sync settings. Enabling sync has not completed."
-  },
   "m106": {
     "ja": "（名前未入力）",
     "en": "(Unnamed)"
-  },
-  "m107": {
-    "ja": "同期領域の設定を読み込みました。",
-    "en": "Settings were loaded from Chrome sync storage."
-  },
-  "m108": {
-    "ja": "同期OFF：このPCに保存します。",
-    "en": "Sync is off: settings are saved on this PC."
   },
   "m109": {
     "ja": "プリセットは20件までです。",
@@ -453,10 +377,6 @@ globalThis.PPMessageCatalog = {
     "ja": "このプリセットを編集画面から削除しますか？保存するまでは再読み込みで戻せます。",
     "en": "Remove this preset from the editor? You can reload to restore it before saving."
   },
-  "m113": {
-    "ja": "保存しました（Chrome同期領域への保存完了）。",
-    "en": "Saved to Chrome sync storage."
-  },
   "m114": {
     "ja": "このPCに保存しました。",
     "en": "Saved on this PC."
@@ -468,10 +388,6 @@ globalThis.PPMessageCatalog = {
   "m116": {
     "ja": "対応する設定ファイルではありません。",
     "en": "This settings file is not supported."
-  },
-  "m117": {
-    "ja": "取り込みました。自動送信・同期はOFFです。保存で確定してください。",
-    "en": "Imported into the editor. Auto-send and sync are off. Save to apply."
   },
   "m118": {
     "ja": "Chromeのアドレス欄に chrome://extensions/shortcuts を入力してください。",
@@ -485,17 +401,9 @@ globalThis.PPMessageCatalog = {
     "ja": "診断欄を選択してCtrl+Cでコピーしてください。",
     "en": "Select the diagnostics text and press Ctrl+C to copy."
   },
-  "m121": {
-    "ja": "同期設定が更新されました。編集中の内容は保持しています。必要ならエクスポート後に再読み込みしてください。",
-    "en": "Synced settings changed. Your edits are preserved. Export them before reloading if needed."
-  },
   "m122": {
     "ja": "操作記録はありません。",
     "en": "No operation has been recorded."
-  },
-  "m123": {
-    "ja": "設定を読み込めません。拡張機能のエラーを確認してください。",
-    "en": "Could not load settings. Check extension errors."
   },
   "m124": {
     "ja": "入力欄が変わったか、既存の入力文があります。",
@@ -623,34 +531,6 @@ globalThis.PPMessageCatalog = {
     "ja": "クリップボード添付に実際のCtrl+Vを使う",
     "en": "Use a real Ctrl+V paste for clipboard attachments"
   },
-  "m155": {
-    "ja": "複数PCの同期",
-    "en": "Sync across PCs"
-  },
-  "m156": {
-    "ja": "設定を複数PCで同期する",
-    "en": "Sync settings across PCs"
-  },
-  "m157": {
-    "ja": "初期値OFF。同じGoogleアカウント・同じ拡張機能ID・Chromeの同期有効が必要です。プリセットと既定選択をGoogleの同期サービスに保存します。画像・自動送信・入力元・診断は同期しません。",
-    "en": "Off by default. Requires the same Google account and extension ID, with Chrome sync enabled. Presets and the default selection are stored in Google's sync service. Images, auto-send, input source and diagnostics are not synced."
-  },
-  "m158": {
-    "ja": "同期をONにするとき",
-    "en": "When enabling sync"
-  },
-  "m159": {
-    "ja": "このPCのプリセットを同期先に保存",
-    "en": "Upload this PC's presets to sync"
-  },
-  "m160": {
-    "ja": "同期済みのプリセットを取り込む",
-    "en": "Import presets from sync"
-  },
-  "m161": {
-    "ja": "同期OFFにすると、このPCのプリセットを保持し、同期先は削除しません。画像・自動送信・入力元・表示言語・診断は同期しません。",
-    "en": "Turning sync off keeps presets on this PC and does not delete synced data. Images, auto-send, input source, language and diagnostics are not synced."
-  },
   "m162": {
     "ja": "すべて保存",
     "en": "Save all settings"
@@ -666,10 +546,6 @@ globalThis.PPMessageCatalog = {
   "m165": {
     "ja": "設定ファイルをインポート",
     "en": "Import settings file"
-  },
-  "m166": {
-    "ja": "インポートは編集画面への取り込みです。「すべて保存」で確定します。自動送信はOFF、同期はOFFに戻します。書き出したファイルにはプロンプト本文が含まれます。",
-    "en": "Import loads settings into the editor. Click Save all settings to apply. Auto-send and sync are turned off. Exported files contain your prompts."
   },
   "m167": {
     "ja": "ショートカット",
@@ -695,112 +571,632 @@ globalThis.PPMessageCatalog = {
     "ja": "診断情報",
     "en": "Diagnostics"
   },
-  "m173": {
-    "ja": "診断にはバージョンと停止段階のみ含めます。画像・本文・チャットURLは含めません。クリップボード画像を上書きしたくない場合はコピーしないでください。",
-    "en": "Diagnostics contain version and operation status, not images, prompts or chat URLs. Copying diagnostics replaces your clipboard contents."
-  },
   "m174": {
     "ja": "画像は実行時のみ扱い保存しません。独自サーバーへの送信はありません。添付・送信先は現在のChatGPTまたはGeminiです。各サービスのアカウント・利用条件に従います。",
     "en": "Images are used only during a run and are not stored. No data is sent to our own servers. Attachments and prompts go to the current ChatGPT or Gemini chat, subject to that service's account and usage terms."
   },
-  "m175": {
-    "ja": "同期のON/OFFはこのPCに即時保存します。ONにするだけでは送信しません。Chrome起動時・設定表示時・実行前と、更新が届いたときに取り込みます。",
-    "en": "The switch is saved immediately on this PC. Turning it on does not upload presets. Updates are imported at startup, when opening Settings, before running and when received."
+  "m300": {
+    "ja": "プリセットと「このPCの動作」を保存します。共有に参加中は、プリセットの変更がほかのPCにも送信されます。",
+    "en": "Saves presets and Device settings. While sharing, preset changes are also sent to your other PCs."
   },
-  "m176": {
-    "ja": "同期済みのプリセットを取り込む",
-    "en": "Import synced presets"
+  "m301": {
+    "ja": "ほかのPCとの共有",
+    "en": "Sharing with other PCs"
   },
-  "m177": {
-    "ja": "取り込みはChromeがこのPCに受信済みの内容を読みます。Googleからの取得を強制することはできません。未保存の編集は自動で置き換えません。",
-    "en": "Import reads data already received by Chrome on this PC. It cannot force a download from Google. Unsaved edits are not replaced automatically."
+  "m302": {
+    "ja": "ほかのPCとプリセットを共有する",
+    "en": "Share presets with my other PCs"
   },
-  "m178": {
-    "ja": "補助操作（初回登録・再送・復元）",
-    "en": "More actions (initial upload, retry, restore)"
+  "m303": {
+    "ja": "共有するのはプリセットと既定のプリセットだけです。「このPCの動作」、表示言語、画像、診断は共有しません。スイッチは押した時点でこのPCに保存され、「すべて保存」は不要です。",
+    "en": "Only presets and the default preset are shared. Device settings, display language, images and diagnostics are not shared. The switch is saved on this PC immediately; you do not need Save all settings for it."
   },
-  "m179": {
-    "ja": "このPCのプリセットを同期先へ保存",
-    "en": "Upload presets from this PC"
+  "m304": {
+    "ja": "このPCのプリセットで共有を始める",
+    "en": "Start sharing with this PC's presets"
   },
-  "m180": {
-    "ja": "直前のプリセットを復元",
-    "en": "Restore previous presets"
+  "m305": {
+    "ja": "未送信の変更を送信",
+    "en": "Send unsent changes"
   },
-  "m181": {
-    "ja": "初回登録・再送は同期先を置き換えます。復元は直前の1世代に戻し、このPCの同期をOFFにします。",
-    "en": "Upload replaces synced presets. Restore returns to the previous saved copy and turns sync off on this PC."
+  "m306": {
+    "ja": "更新を確認",
+    "en": "Check for updates"
   },
-  "m182": {
-    "ja": "同期への保存が未完了です。このPCの設定を保持しています。補助操作から再送できます。",
-    "en": "Sync writing is incomplete. Settings on this PC are preserved. Retry from More actions."
+  "m307": {
+    "ja": "ほかのPCのプリセットが届かないとき",
+    "en": "If presets from your other PCs do not arrive"
   },
-  "m183": {
-    "ja": "同期データがまだ届いていません。初回登録は補助操作から行えます。",
-    "en": "No synced data has arrived yet. Use More actions for the initial upload."
+  "m308": {
+    "ja": "すべてのPCで同じGoogleアカウントでChromeにログインし、Chromeの同期で「拡張機能」がONになっているか確認してください。",
+    "en": "Sign in to Chrome with the same Google account on every PC, and make sure Extensions is turned on in Chrome sync."
   },
-  "m184": {
-    "ja": "同期データを取り込めません。受信途中の場合は到着後に再確認します。このPCの設定を保持しています。",
-    "en": "Cannot import synced data. If data is incomplete, it will be checked again on arrival. Settings on this PC are preserved."
+  "m309": {
+    "ja": "すべてのPCのPromptPaletteを同じ版に更新し、共有をONにしてください。",
+    "en": "Update PromptPalette to the same version on every PC and turn sharing on."
   },
-  "m185": {
-    "ja": "同期データが更新されています。編集中の内容をエクスポートし、同期済みのプリセットを取り込んでから保存してください。",
-    "en": "Synced data has changed. Export your edits, import synced presets, then save again."
+  "m310": {
+    "ja": "Chromeの同期には時間がかかる場合があります。「更新を確認」はこのPCに届いている内容を確認する操作で、Googleから強制的に取得するものではありません。",
+    "en": "Chrome sync can take some time. Check for updates looks at what has already reached this PC; it does not force a download from Google."
   },
-  "m186": {
-    "ja": "このPCには保存しましたが、Chrome同期領域への書き込みに失敗しました。補助操作から再送してください。",
-    "en": "Saved on this PC, but writing to Chrome sync storage failed. Retry from More actions."
+  "m311": {
+    "ja": "どのPCでも共有を始めていない場合は、プリセットが入っている1台で「このPCのプリセットで共有を始める」を押してください。",
+    "en": "If no PC has started sharing yet, click Start sharing with this PC's presets on one PC that has your presets."
   },
-  "m187": {
-    "ja": "復元できるプリセットはありません。",
-    "en": "There are no presets to restore."
+  "m312": {
+    "ja": "急ぐ場合は、設定のエクスポート／インポートでも移せます。",
+    "en": "If you are in a hurry, you can also move presets with Export settings / Import settings file."
   },
-  "m188": {
-    "ja": "同期ON：保存したプリセットを共有し、届いた更新を自動で取り込みます。",
-    "en": "Sync is on: saved preset changes are shared and received updates are imported automatically."
+  "m313": {
+    "ja": "詳細（復元・置き換え・整理）",
+    "en": "Advanced (restore, replace, clean up)"
   },
-  "m189": {
-    "ja": "このPCに保存し、Chrome同期領域へ書き込みました。他PCへの到着はChromeが処理します。",
-    "en": "Saved on this PC and written to Chrome sync storage. Chrome handles delivery to other PCs."
+  "m314": {
+    "ja": "バックアップから復元（このPCだけ）",
+    "en": "Restore from a backup (this PC only)"
   },
-  "m190": {
-    "ja": "同期をONにして取り込むと、未保存のプリセットとPC設定の編集を破棄します。続けますか？",
-    "en": "Enabling sync and importing discards unsaved preset and PC setting edits. Continue?"
+  "m315": {
+    "ja": "上書きや受信の前の内容を、このPCに最大20件（重要な時点は別に6件）残しています。復元はこのPCだけに行い、ほかのPCへは自動で送信しません。拡張機能を削除すると、このバックアップも消えます。",
+    "en": "Up to 20 earlier versions (6 of them reserved for important moments) are kept on this PC before overwrites and received updates. Restoring affects this PC only and is not sent to other PCs automatically. Removing the extension also deletes these backups."
   },
-  "m191": {
-    "ja": "このPCの同期をONにしました。ONにするだけではプリセットを送信しません。",
-    "en": "Sync is on for this PC. Enabling it alone does not upload presets."
+  "m316": {
+    "ja": "復元する時点 ",
+    "en": "Version to restore "
   },
-  "m192": {
-    "ja": "このPCの同期をOFFにしました。",
-    "en": "Sync is off for this PC."
+  "m317": {
+    "ja": "選んだ時点のプリセットをこのPCに復元",
+    "en": "Restore the selected version on this PC"
   },
-  "m193": {
-    "ja": "未保存の編集または未送信の変更を破棄し、同期済みのプリセットに置き換えますか？",
-    "en": "Discard unsaved edits or pending changes and replace them with synced presets?"
+  "m318": {
+    "ja": "共有内容をこのPCの内容で置き換える",
+    "en": "Replace shared presets with this PC's presets"
   },
-  "m194": {
-    "ja": "同期済みのプリセットを取り込みました。",
-    "en": "Imported synced presets."
+  "m319": {
+    "ja": "ほかのPCの共有内容を、このPCのプリセット一式で置き換えます。置き換えの前に影響を表示します。削除が多い場合、ほかのPCでは確認後に反映されます。置き換え前の内容は各PCのバックアップに残ります。",
+    "en": "Replaces the shared presets on your other PCs with this PC's full set. The impact is shown first. If many presets would be removed, other PCs ask before applying. Each PC keeps the previous presets in its backups."
   },
-  "m195": {
-    "ja": "取り込める更新はありません。",
-    "en": "There are no updates to import."
+  "m320": {
+    "ja": "共有内容をこのPCの内容で置き換える",
+    "en": "Replace shared presets with this PC's presets"
   },
-  "m196": {
-    "ja": "同期をONにし、この画面のプリセットを保存して同期先を置き換えます。初回登録・再送に使用してください。続けますか？",
-    "en": "Turn on sync, save the presets in this editor and replace synced presets? Use for initial upload or retry. Continue?"
+  "m321": {
+    "ja": "古い同期データを整理",
+    "en": "Clean up old sync data"
   },
-  "m197": {
-    "ja": "直前の保存・取り込み前のプリセットに戻し、このPCの同期をOFFにします。未保存の編集は破棄します。続けますか？",
-    "en": "Restore presets from before the last save or import and turn sync off on this PC? Unsaved edits will be discarded. Continue?"
+  "m322": {
+    "ja": "このPCが取り込み済みの古い更新と、旧版（2.1.0以前）用の同期データを削除して容量を空けます。現在の共有内容とこのPCのプリセットは削除しません。旧版のPCは、以後この同期データを受け取れません。",
+    "en": "Frees space by deleting old updates already imported by this PC and sync data used by old versions (2.1.0 and earlier). The current shared presets and this PC's presets are not deleted. PCs on old versions will no longer receive this sync data."
   },
-  "m198": {
-    "ja": "直前のプリセットを復元しました。同期はOFFです。",
-    "en": "Restored previous presets. Sync is off."
+  "m323": {
+    "ja": "古い同期データを整理",
+    "en": "Clean up old sync data"
   },
-  "m199": {
-    "ja": "同期データが更新されています。編集中の内容は保持しています。取り込みボタンで反映できます。",
-    "en": "Synced data has changed. Your edits are preserved. Use the import button to apply the update."
+  "m324": {
+    "ja": "旧版（2.1.0以前）からの更新",
+    "en": "Updating from 2.1.0 or earlier"
+  },
+  "m325": {
+    "ja": "3.0.0は新しい同期方式を使います。旧版のPCとは共有内容が自動では行き来しません。すべてのPCを3.0.0に更新してください。更新前に各PCで「設定をエクスポート」しておくと安全です。旧版のPCから届いた変更は、確認してから反映できます。",
+    "en": "Version 3.0.0 uses a new sync method. Shared presets do not move automatically between it and PCs on old versions. Update every PC to 3.0.0. Exporting settings on each PC before updating is recommended. Changes from PCs on old versions can be applied after you review them."
+  },
+  "m326": {
+    "ja": "インポートは編集画面への読み込みです。「すべて保存」で確定します。自動送信はOFFに戻します。共有に参加中は、保存するとほかのPCにも送信されます（保存前に確認します）。書き出したファイルにはプロンプト本文が含まれます。拡張機能を削除・再インストールする前にエクスポートしてください。",
+    "en": "Import loads settings into the editor. Click Save all settings to apply. Auto-send is turned off. While sharing, saving also sends the presets to your other PCs (you are asked first). Exported files contain your prompts. Export before removing or reinstalling the extension."
+  },
+  "m327": {
+    "ja": "診断情報を表示",
+    "en": "Show diagnostics"
+  },
+  "m328": {
+    "ja": "診断には、版、停止段階、エラーコード、候補数、同期の状態と履歴だけを含めます。画像・プロンプト本文・プリセット名・チャットURLは含めません。「診断情報をコピー」はクリップボードの内容（コピー中の画像を含む）を置き換えます。",
+    "en": "Diagnostics include only the version, stop stage, error code, candidate counts and sync state/history. Images, prompts, preset names and chat URLs are not included. Copy diagnostics replaces your clipboard contents, including any copied image."
+  },
+  "m329": {
+    "ja": "{0}（{1}）",
+    "en": "{0} ({1})"
+  },
+  "m330": {
+    "ja": "両方を残すと20件を超えます。不要なプリセットを削除してから操作するか、どちらか一方を選んでください。",
+    "en": "Keeping both would exceed 20 presets. Delete presets you no longer need first, or choose one side."
+  },
+  "m331": {
+    "ja": "同期できる容量を超えます。プリセットや本文を減らしてください。このPCには保存済みです。",
+    "en": "This exceeds the sync capacity. Reduce presets or prompt text. Saved on this PC."
+  },
+  "m332": {
+    "ja": "このPCの同期状態は新しい版のPromptPaletteで作成されています。PromptPaletteを更新してください。",
+    "en": "The sync state on this PC was created by a newer PromptPalette. Update PromptPalette."
+  },
+  "m333": {
+    "ja": "同期の確認待ちの更新があります。設定画面の「ほかのPCとの共有」を確認してください。",
+    "en": "A sync update is waiting for your review. Check Sharing with other PCs in Settings."
+  },
+  "m334": {
+    "ja": "共有がOFFです。スイッチをONにしてから操作してください。",
+    "en": "Sharing is off. Turn the switch on first."
+  },
+  "m335": {
+    "ja": "新しい版のPromptPaletteで作られた同期データがあります。このPCのPromptPaletteを更新してから送信してください。このPCには保存済みです。",
+    "en": "There is sync data from a newer PromptPalette. Update PromptPalette on this PC before sending. Saved on this PC."
+  },
+  "m336": {
+    "ja": "同期できる容量を超えます。プリセットや本文を減らすか、詳細の「古い同期データを整理」を試してください。このPCには保存済みです。",
+    "en": "This exceeds the sync capacity. Reduce presets or prompt text, or try Clean up old sync data under Advanced. Saved on this PC."
+  },
+  "m337": {
+    "ja": "このPCには保存しましたが、Chromeの同期領域へ書き込めませんでした。時間をおいて「未送信の変更を送信」を押してください。",
+    "en": "Saved on this PC, but writing to Chrome sync storage failed. Wait a while, then click Send unsent changes."
+  },
+  "m338": {
+    "ja": "編集中に、このPCのプリセットが更新されました（ほかのPCからの受信など）。",
+    "en": "The presets on this PC changed while you were editing (for example, an update from another PC)."
+  },
+  "m339": {
+    "ja": "共有に参加していないため送信できません。",
+    "en": "This PC has not joined sharing, so nothing can be sent."
+  },
+  "m340": {
+    "ja": "このPCはすでに共有に参加しています。",
+    "en": "This PC is already sharing."
+  },
+  "m341": {
+    "ja": "ほかのPCの共有データが届いています。共有を始める前に、届いた内容を確認してください。",
+    "en": "Shared data from another PC has arrived. Review it before starting to share."
+  },
+  "m342": {
+    "ja": "本文のあるプリセットがないため、共有を始められません。プリセットを入力して「すべて保存」してから操作してください。",
+    "en": "Sharing cannot start because no preset has a prompt. Enter a preset and click Save all settings first."
+  },
+  "m343": {
+    "ja": "この更新はすでに処理されています。画面を更新しました。",
+    "en": "This update has already been handled. The page has been refreshed."
+  },
+  "m344": {
+    "ja": "このPC",
+    "en": "this PC"
+  },
+  "m345": {
+    "ja": "別のPC",
+    "en": "other PC"
+  },
+  "m346": {
+    "ja": "本文のあるプリセットがないため、共有内容を置き換えられません。",
+    "en": "Shared presets cannot be replaced because no preset on this PC has a prompt."
+  },
+  "m347": {
+    "ja": "置き換える共有内容がまだ届いていません。最初の1台の場合は「このPCのプリセットで共有を始める」を使ってください。",
+    "en": "No shared presets have arrived to replace. On the first PC, use Start sharing with this PC's presets."
+  },
+  "m348": {
+    "ja": "選んだバックアップが見つかりません。",
+    "en": "The selected backup was not found."
+  },
+  "m349": {
+    "ja": "共有に参加していないため整理できません。",
+    "en": "This PC has not joined sharing, so nothing can be cleaned up."
+  },
+  "m350": {
+    "ja": "現在の共有内容がこのPCの同期領域で確認できないため、整理しません。",
+    "en": "The current shared presets cannot be confirmed in this PC's sync storage, so nothing was cleaned up."
+  },
+  "m351": {
+    "ja": "設定を読み込めません。設定画面を開き直してください。",
+    "en": "Could not load settings. Reopen the Settings page."
+  },
+  "m352": {
+    "ja": "{0}件（本文あり{1}件）",
+    "en": "{0} presets ({1} with prompts)"
+  },
+  "m353": {
+    "ja": "共有はOFFです。プリセットはこのPCだけに保存されます。",
+    "en": "Sharing is off. Presets are saved on this PC only."
+  },
+  "m354": {
+    "ja": "ほかのPCのプリセットを待っています。このPCからはまだ送信しません。",
+    "en": "Waiting for presets from your other PCs. This PC does not send anything yet."
+  },
+  "m355": {
+    "ja": "ほかのPCのプリセットが届きました。このPCにもプリセットがあるため、自動では置き換えていません。下で使い方を選んでください。",
+    "en": "Presets from another PC have arrived. Because this PC also has presets, nothing was replaced automatically. Choose what to do below."
+  },
+  "m356": {
+    "ja": "確認が必要な更新があります。下の内容を確認してください。",
+    "en": "An update needs your review. See below."
+  },
+  "m357": {
+    "ja": "このPCの変更を、まだほかのPCへ送信していません。",
+    "en": "Changes on this PC have not been sent to your other PCs yet."
+  },
+  "m358": {
+    "ja": "ほかのPCとプリセットを共有しています。",
+    "en": "Sharing presets with your other PCs."
+  },
+  "m359": {
+    "ja": "最初の1台として共有を始める場合は「このPCのプリセットで共有を始める」を押してください。2台目以降のPCでは、届くまで待つか「更新を確認」を押してください。待っている間に保存した内容は、このPCに残ります。",
+    "en": "To start sharing from this PC as the first one, click Start sharing with this PC's presets. On your second and later PCs, wait for the presets to arrive or click Check for updates. Anything you save while waiting stays on this PC."
+  },
+  "m360": {
+    "ja": "このPCのプリセット：{0}",
+    "en": "Presets on this PC: {0}"
+  },
+  "m361": {
+    "ja": "最終取り込み：{0}",
+    "en": "Last imported: {0}"
+  },
+  "m362": {
+    "ja": "このPCから最後に送信：{0}（Chromeの同期領域への書き込みです。ほかのPCへの到着は確認できません）",
+    "en": "Last sent from this PC: {0} (written to Chrome sync storage; arrival on other PCs cannot be confirmed)"
+  },
+  "m363": {
+    "ja": "最後に確認：{0}",
+    "en": "Last checked: {0}"
+  },
+  "m364": {
+    "ja": "受信途中のデータがあります。届き終わると自動で確認します。",
+    "en": "Some data is still arriving. It will be checked automatically once complete."
+  },
+  "m365": {
+    "ja": "読み取れない同期データがあったため、無視しました。",
+    "en": "Some sync data could not be read and was ignored."
+  },
+  "m366": {
+    "ja": "新しい版のPromptPaletteで作られた同期データがあります。このPCのPromptPaletteを更新してください。",
+    "en": "There is sync data from a newer PromptPalette. Update PromptPalette on this PC."
+  },
+  "m367": {
+    "ja": "前回の送信は完了していません。このPCには保存済みです。",
+    "en": "The last send did not complete. The changes are saved on this PC."
+  },
+  "m368": {
+    "ja": "ほかのPCのプリセットが届きました",
+    "en": "Presets from another PC have arrived"
+  },
+  "m369": {
+    "ja": "ほかのPCの変更と、このPCの変更が重なりました。どちらも保持しています。",
+    "en": "Changes from another PC overlap with changes on this PC. Both are kept."
+  },
+  "m370": {
+    "ja": "すべての本文を空にする更新が届きました。自動では反映していません。",
+    "en": "An update that empties every prompt has arrived. It was not applied automatically."
+  },
+  "m371": {
+    "ja": "多くのプリセットを削除する（または本文を空にする）更新が届きました。自動では反映していません。",
+    "en": "An update that removes many presets (or empties prompts) has arrived. It was not applied automatically."
+  },
+  "m372": {
+    "ja": "旧版のPromptPaletteを使っているPCから更新が届きました。自動では反映していません。",
+    "en": "An update arrived from a PC using an old version of PromptPalette. It was not applied automatically."
+  },
+  "m373": {
+    "ja": "届いた内容：{0}／このPC：{1}",
+    "en": "Received: {0} / This PC: {1}"
+  },
+  "m374": {
+    "ja": "反映すると、このPCのプリセットが{0}件なくなります。",
+    "en": "Applying it removes {0} presets from this PC."
+  },
+  "m375": {
+    "ja": "受信：{0}{1}",
+    "en": "Received: {0}{1}"
+  },
+  "m376": {
+    "ja": "（作成：{0}、送信したPCの時計）",
+    "en": " (created {0} by the sending PC's clock)"
+  },
+  "m377": {
+    "ja": "未保存の編集があります。この操作で編集画面を保存済みの内容に戻します。続けますか？",
+    "en": "You have unsaved edits. This action resets the editor to the saved presets. Continue?"
+  },
+  "m378": {
+    "ja": "今のこのPCの内容はバックアップに残ります。",
+    "en": "This PC's current presets are kept in its backups. "
+  },
+  "m379": {
+    "ja": "届いたプリセットを使う",
+    "en": "Use the received presets"
+  },
+  "m380": {
+    "ja": "このPCのプリセットを、届いたプリセットに置き換えます。{0}続けますか？",
+    "en": "Replace this PC's presets with the received presets? {0}Continue?"
+  },
+  "m381": {
+    "ja": "両方を残す",
+    "en": "Keep both"
+  },
+  "m382": {
+    "ja": "届いたプリセットに、このPCのプリセットを追加して共有します。続けますか？",
+    "en": "Add this PC's presets to the received presets and share the result? Continue?"
+  },
+  "m383": {
+    "ja": "受信した内容を使う",
+    "en": "Use the received version"
+  },
+  "m384": {
+    "ja": "このPCの内容を、受信した内容に置き換えます。{0}続けますか？",
+    "en": "Replace this PC's presets with the received version? {0}Continue?"
+  },
+  "m385": {
+    "ja": "このPCの内容を使う",
+    "en": "Use this PC's version"
+  },
+  "m386": {
+    "ja": "このPCの内容をほかのPCにも送信します。受信した内容はバックアップに残ります。続けますか？",
+    "en": "Send this PC's version to your other PCs? The received version is kept in backups. Continue?"
+  },
+  "m387": {
+    "ja": "このPCのプリセットに、受信したプリセットを追加して共有します。続けますか？",
+    "en": "Add the received presets to this PC's presets and share the result? Continue?"
+  },
+  "m388": {
+    "ja": "この更新を反映する",
+    "en": "Apply this update"
+  },
+  "m389": {
+    "ja": "この更新を反映します。{0}続けますか？",
+    "en": "Apply this update? {0}Continue?"
+  },
+  "m390": {
+    "ja": "このPCの内容で共有し直す",
+    "en": "Re-share this PC's presets"
+  },
+  "m391": {
+    "ja": "このPCの内容をほかのPCにも送信し、届いた更新を取り消します。続けますか？",
+    "en": "Send this PC's presets to your other PCs and undo the received update? Continue?"
+  },
+  "m392": {
+    "ja": "旧版のPCの内容をこのPCに反映し、新しい方式でほかのPCにも送信します。{0}続けますか？",
+    "en": "Apply the old-version PC's presets on this PC and send them to your other PCs with the new method? {0}Continue?"
+  },
+  "m393": {
+    "ja": "無視する",
+    "en": "Ignore"
+  },
+  "m394": {
+    "ja": "この旧版の更新を取り込みません。続けますか？",
+    "en": "Do not import this update from the old version? Continue?"
+  },
+  "m395": {
+    "ja": "保存しました。ほかのPCへの送信として、Chromeの同期領域へ書き込みました（ほかのPCへの到着は確認できません）。",
+    "en": "Saved. Written to Chrome sync storage for your other PCs (arrival on other PCs cannot be confirmed)."
+  },
+  "m396": {
+    "ja": "このPCに保存しました。共有への参加前のため、ほかのPCへは送信していません。",
+    "en": "Saved on this PC. Nothing was sent because this PC has not joined sharing yet."
+  },
+  "m397": {
+    "ja": "このPCに保存しました。確認が必要な更新があるため、まだ送信していません。",
+    "en": "Saved on this PC. Not sent yet because an update needs your review."
+  },
+  "m398": {
+    "ja": "このPCに届いている新しい更新はありません。Googleから強制的に取得する操作ではないため、ほかのPCの最新の変更がまだ届いていない場合があります。",
+    "en": "No new updates have reached this PC. This does not force a download from Google, so recent changes from other PCs may not have arrived yet."
+  },
+  "m399": {
+    "ja": "届いた更新は、このPCと同じ内容でした。",
+    "en": "The received update matches this PC's presets."
+  },
+  "m400": {
+    "ja": "届いた更新を取り込みました。",
+    "en": "Imported the received update."
+  },
+  "m401": {
+    "ja": "届いたプリセットを取り込み、共有に参加しました。",
+    "en": "Imported the received presets and joined sharing."
+  },
+  "m402": {
+    "ja": "未送信の変更はありません。",
+    "en": "There are no unsent changes."
+  },
+  "m403": {
+    "ja": "選んだ内容をこのPCに反映しました。",
+    "en": "Applied your choice on this PC."
+  },
+  "m404": {
+    "ja": "このPCだけに復元しました。共有に参加中の場合は、まだほかのPCへ送信していません。共有するには「未送信の変更を送信」を押してください。",
+    "en": "Restored on this PC only. If sharing, nothing has been sent to your other PCs yet. To share it, click Send unsent changes."
+  },
+  "m405": {
+    "ja": "共有はOFFです。",
+    "en": "Sharing is off."
+  },
+  "m406": {
+    "ja": "古い同期データを{0}項目削除しました。",
+    "en": "Deleted {0} items of old sync data."
+  },
+  "m407": {
+    "ja": "読み込んだ設定を保存すると、ほかのPCにも送信されます。続けますか？",
+    "en": "Saving the imported settings also sends them to your other PCs. Continue?"
+  },
+  "m408": {
+    "ja": "多くのプリセットの削除、または本文を空にする変更です（なくなるプリセット：{0}件）。ほかのPCでは確認後に反映されます。保存しますか？",
+    "en": "This change removes many presets or empties prompts (presets removed: {0}). Your other PCs will ask before applying it. Save?"
+  },
+  "m409": {
+    "ja": "編集中に、このPCのプリセットが更新されました（ほかのPCからの受信など）。この画面の内容で保存しますか？更新された内容はバックアップに残ります。",
+    "en": "The presets on this PC changed while you were editing (for example, an update from another PC). Save what is on this screen? The updated presets are kept in backups."
+  },
+  "m410": {
+    "ja": "保存を取りやめました。編集内容は画面に残っています。",
+    "en": "Not saved. Your edits remain on screen."
+  },
+  "m411": {
+    "ja": "このPromptPaletteより新しい形式の設定ファイルです。PromptPaletteを更新してください。",
+    "en": "This settings file uses a newer format than this PromptPalette. Update PromptPalette."
+  },
+  "m412": {
+    "ja": "読み込みました。自動送信はOFFです。「すべて保存」で確定してください。",
+    "en": "Loaded into the editor. Auto-send is off. Click Save all settings to apply."
+  },
+  "m413": {
+    "ja": "診断情報をクリップボードにコピーします。クリップボードにコピーしている画像は置き換わります。続けますか？",
+    "en": "Copy diagnostics to the clipboard? Any image currently on the clipboard will be replaced. Continue?"
+  },
+  "m414": {
+    "ja": "このPCの共有をONにしました。ONにするだけでは送信しません。",
+    "en": "Sharing is on for this PC. Turning it on does not send anything."
+  },
+  "m415": {
+    "ja": "このPCの共有をOFFにしました。このPCのプリセットは残り、ほかのPCの共有内容も削除しません。",
+    "en": "Sharing is off for this PC. Presets on this PC are kept, and shared presets on other PCs are not deleted."
+  },
+  "m416": {
+    "ja": "編集中の内容は画面に残しています。保存すると確認が表示されます。",
+    "en": " Your edits remain on screen; you will be asked before saving."
+  },
+  "m417": {
+    "ja": "先に「すべて保存」でこのPCのプリセットを保存してください。",
+    "en": "Click Save all settings first to save this PC's presets."
+  },
+  "m418": {
+    "ja": "このPCのプリセット（{0}）で共有を始めます。ほかのPCがすでに共有している場合は使わないでください。続けますか？",
+    "en": "Start sharing with this PC's presets ({0})? Do not use this if another PC is already sharing. Continue?"
+  },
+  "m419": {
+    "ja": "共有を始めました。ほかのPCでは共有をONにすると、届いたプリセットを取り込みます（Chromeの同期の到着後）。",
+    "en": "Sharing has started. On your other PCs, turn sharing on to import the presets once Chrome sync delivers them."
+  },
+  "m420": {
+    "ja": "不明",
+    "en": "unknown"
+  },
+  "m421": {
+    "ja": "共有内容を、このPCのプリセット（{0}）で置き換えます。現在の共有内容：{1}。なくなるプリセット：{2}件。確認待ちの更新{3}件は取り込まずにバックアップへ残します。ほかのPCでは、削除が多い場合は確認後に反映されます。続けますか？",
+    "en": "Replace the shared presets with this PC's presets ({0})? Current shared presets: {1}. Presets removed: {2}. {3} updates waiting for review will not be imported and are kept in backups. Other PCs ask before applying if many presets are removed. Continue?"
+  },
+  "m422": {
+    "ja": "このPCが取り込み済みの古い更新と旧版用の同期データを削除します。現在の共有内容とこのPCのプリセットは削除しません。旧版のPromptPaletteを使っているPCは、以後この同期データを受け取れません。続けますか？",
+    "en": "Delete old updates already imported by this PC and sync data used by old versions? The current shared presets and this PC's presets are not deleted. PCs using old versions of PromptPalette will no longer receive this sync data. Continue?"
+  },
+  "m423": {
+    "ja": "保存前",
+    "en": "before saving"
+  },
+  "m424": {
+    "ja": "受信前",
+    "en": "before receiving"
+  },
+  "m425": {
+    "ja": "共有への参加前",
+    "en": "before joining"
+  },
+  "m426": {
+    "ja": "受信内容を使う前",
+    "en": "before using received version"
+  },
+  "m427": {
+    "ja": "結合前",
+    "en": "before merging"
+  },
+  "m428": {
+    "ja": "置き換え前",
+    "en": "before replacing"
+  },
+  "m429": {
+    "ja": "復元前",
+    "en": "before restoring"
+  },
+  "m430": {
+    "ja": "上書き保存前",
+    "en": "before overwrite save"
+  },
+  "m431": {
+    "ja": "共有開始前",
+    "en": "before starting to share"
+  },
+  "m432": {
+    "ja": "取り込まなかった受信内容",
+    "en": "received version not imported"
+  },
+  "m433": {
+    "ja": "3.0.0への更新時",
+    "en": "when updating to 3.0.0"
+  },
+  "m434": {
+    "ja": "旧版の直前バックアップ",
+    "en": "previous backup from old version"
+  },
+  "m435": {
+    "ja": "{0} ・ {1} ・ {2}{3}",
+    "en": "{0} · {1} · {2}{3}"
+  },
+  "m436": {
+    "ja": "（保護）",
+    "en": " (protected)"
+  },
+  "m437": {
+    "ja": "選んだ時点のプリセットを、このPCだけに復元します。今の内容はバックアップに残ります。未保存の編集は破棄します。続けますか？",
+    "en": "Restore the selected version on this PC only? The current presets are kept in backups. Unsaved edits are discarded. Continue?"
+  },
+  "m438": {
+    "ja": "このPCのプリセットが更新されました（ほかのPCからの受信など）。編集中の内容は画面に残しています。",
+    "en": "The presets on this PC were updated (for example, from another PC). Your edits remain on screen."
+  },
+  "m439": {
+    "ja": "設定を読み込めません。設定画面を開き直してください。解決しない場合はChromeを再起動してください。",
+    "en": "Could not load settings. Reopen the Settings page. If that does not help, restart Chrome."
+  },
+  "m440": {
+    "ja": "表示言語を保存しました。実行メッセージには次回起動から反映します。",
+    "en": "Display language saved. Run messages use it from the next run."
+  },
+  "m441": {
+    "ja": "表示言語を保存できませんでした。",
+    "en": "Could not save the display language."
+  },
+  "m442": {
+    "ja": "コード：{0}\n段階：{1}\nバージョン：{2}\n添付：{3}／送信：{4}",
+    "en": "Code: {0}\nStage: {1}\nVersion: {2}\nAttach: {3} / Sent: {4}"
+  },
+  "m443": {
+    "ja": "詳しい情報",
+    "en": "Details"
+  },
+  "m444": {
+    "ja": "チャット入力欄が見つかりません。通常のチャット画面を開き、ページを再読み込みしてから再試行してください。",
+    "en": "The chat composer was not found. Open a regular chat, reload the page and try again."
+  },
+  "m445": {
+    "ja": "Geminiのアスペクト比の操作が見つかりません。比率はGeminiの画面で手動で選んでください。",
+    "en": "Gemini's aspect ratio control was not found. Choose the ratio manually in Gemini."
+  },
+  "m446": {
+    "ja": "画像を自動で添付できませんでした。添付先を特定できなかったため、画像は添付していません。",
+    "en": "Could not attach the image automatically. The upload field could not be identified, so no image was attached."
+  },
+  "m447": {
+    "ja": "ファイル選択には自動添付方式が必要です。設定の「クリップボード添付に実際のCtrl+Vを使う」をOFFにしてください。",
+    "en": "File selection needs automatic attachment. Turn off \"Use a real Ctrl+V paste for clipboard attachments\" in Settings."
+  },
+  "m448": {
+    "ja": "画像の添付操作を1回行いました。画像が後から表示される場合があります。入力欄を確認してください。",
+    "en": "The image attachment was attempted once. The image may appear later. Check the composer."
+  },
+  "m449": {
+    "ja": "画像の添付操作を始めましたが、結果を確認できません。入力欄を確認してください。",
+    "en": "The image attachment started, but the result could not be confirmed. Check the composer."
+  },
+  "m450": {
+    "ja": "画像の添付・入力・送信は行っていません。",
+    "en": "No image was attached, no text was entered and nothing was sent."
+  },
+  "m451": {
+    "ja": "ページを再読み込みして再試行してください。解決しない場合は、画像をクリップボードにコピーして実行するか、サイトの添付ボタンから手動で添付してください。",
+    "en": "Reload the page and try again. If that does not help, copy the image to the clipboard and run from there, or attach it manually with the site's attach button."
+  },
+  "m452": {
+    "ja": "ページを再読み込みして再試行してください。解決しない場合は、設定で「クリップボード添付に実際のCtrl+Vを使う」をONにしてください。",
+    "en": "Reload the page and try again. If that does not help, turn on \"Use a real Ctrl+V paste for clipboard attachments\" in Settings."
+  },
+  "m453": {
+    "ja": "入力欄の画像を確認・削除してから再実行してください。続けて失敗する場合は、設定で「クリップボード添付に実際のCtrl+Vを使う」をONにしてください。",
+    "en": "Check and remove the image in the composer, then run again. If it keeps failing, turn on \"Use a real Ctrl+V paste for clipboard attachments\" in Settings."
+  },
+  "m454": {
+    "ja": "入力文が残っています。ページを再読み込みする前に確認してください。",
+    "en": "Text remains in the composer. Check it before reloading the page."
+  },
+  "m455": {
+    "ja": "{0}で停止：{1}\n{2}\n{3}{4}\n残った内容を削除・上書きしません。{5}",
+    "en": "Stopped at {0}: {1}\n{2}\n{3}{4}\nRemaining content will not be deleted or overwritten.{5}"
   }
 };

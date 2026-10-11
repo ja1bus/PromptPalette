@@ -17,7 +17,7 @@ function fixture(overrides = {}) {
       addEventListener(name, fn) { this.listeners[name] = fn; } };
     elements.push(e); return e;
   }
-  const editor = { focus() {}, contains: e => e === editor };
+  const editor = { focus() {}, contains: e => e === editor, dispatchEvent() { state.pasteCalls = (state.pasteCalls || 0) + 1; state.attachCalls++; state.attached = true; } };
   const input = { dispatchEvent() { state.attachCalls++; state.attached = true; } };
   const send = { click() {
     state.sendCalls++;
@@ -29,7 +29,9 @@ function fixture(overrides = {}) {
   const adapter = {
     editor: () => editor, root: () => ({}), text: () => state.text,
     disabled: e => !e || !!e.disabled, generating: () => state.generating,
-    hasAttachment: () => state.attached, otherMode: () => false, fileInput: () => input,
+    hasAttachment: () => state.attached, otherMode: () => false,
+    fileInput: () => state.noInput || (state.inputDelay && state.inputDelay-- > 0) ? null : input,
+    fileInputSummary: () => ({ total: 4, camera: 1, image: 2, media: 1, generic: 0, other: 0, busy: 0 }),
     attachmentReady: () => state.attached && !state.neverReady,
     uploadError: () => false, modeSelected: () => state.mode, add: () => add, modeItem: () => item,
     insert: text => { state.text = state.inputMismatch ? text + "余分な文" : text; }, send: () => send,
@@ -52,6 +54,7 @@ function fixture(overrides = {}) {
     document: { documentElement: element("root"), createElement: element, hasFocus: () => true, addEventListener() {}, removeEventListener() {} },
     MutationObserver: class { observe() {} disconnect() {} },
     File: class { constructor(parts, name, options) { this.name = name; this.type = options.type; } },
+    ClipboardEvent: class { constructor(type, init) { this.type = type; Object.assign(this, init); } },
     DataTransfer: class { constructor() { this.files = []; this.items = { add: f => this.files.push(f) }; } },
     navigator: { clipboard: { read: async () => {
       state.readCalls++;
@@ -59,9 +62,9 @@ function fixture(overrides = {}) {
       return state.noImage ? [] : [{ types: ["image/png"], getType: async () => ({ size: 100 }) }];
     } } },
     chrome: { i18n: { getUILanguage: () => state.locale || "ja" }, runtime: { id: "fixture", onMessage: { addListener(fn) { listener = fn; } },
-      sendMessage: async message => { if (message.type === "CGCI_STATUS") state.statuses.push(message); } },
+      sendMessage: async message => { if (message.type === "CGCI_STATUS") state.statuses.push(message); }, getManifest: () => ({ version: "3.0.0" }) },
       storage: { local: { get: async () => ({ prompt: state.noPrompt ? "" : "一行目\n二行目", autoSend: !!state.autoSend, manualPaste: false }) } } },
-    setTimeout: (fn, ms) => { const id = setTimeout(fn, (state.neverReady && ms === 45000) || (state.inputMismatch && ms === 10000) || ((state.noReceipt || state.wrongConversation) && ms === 15000) ? 30 : ms); timers.add(id); return id; },
+    setTimeout: (fn, ms) => { const id = setTimeout(fn, (state.neverReady && ms === 45000) || (state.noInput && ms === 3000) || (state.inputMismatch && ms === 10000) || ((state.noReceipt || state.wrongConversation) && ms === 15000) ? 30 : ms); timers.add(id); return id; },
     clearTimeout: id => { timers.delete(id); clearTimeout(id); },
     setInterval: (fn, ms) => { const id = setInterval(fn, ms); timers.add(id); return id; },
     clearInterval: id => { timers.delete(id); clearInterval(id); },
@@ -76,8 +79,8 @@ function fixture(overrides = {}) {
   const finish = async () => {
     for (let i = 0; i < 200; i++) {
       if (state.statuses.some(s => s.done || s.error)) return;
-      const prepare = elements.find(e => e.textContent === (context.PPI18n?.t("準備する") || "準備する"));
-      if (prepare && !state.waitSelection) prepare.listeners.click();
+      const prepare = elements.findLast(e => e.textContent === (context.PPI18n?.t("準備する") || "準備する"));
+      if (prepare && !prepare.clicked && !state.waitSelection) { prepare.clicked = true; prepare.listeners.click(); }
       const picker = elements.find(e => e.tag === "input" && e.type === "file");
       if (picker && !picker.handled) { picker.handled = true;
         if (state.cancelFile) picker.listeners.cancel();
@@ -174,4 +177,30 @@ test("英語UIでも日本語本文を翻訳せず準備する", () => scenario(
 }));
 test("英語UIの画像なしエラー", () => scenario({locale:"en-US",noImage:true}, ({state}) => {
  assert.match(state.statuses.at(-1).text,/No supported image/); assert.equal(state.attachCalls,0);
+}));
+
+test("添付先のinputを特定できなければ添付せず、添付済みと表示せず、再試行できる", () => scenario({ noInput: true }, async f => {
+  const last = f.state.statuses.at(-1);
+  assert.equal(f.state.attachCalls, 0); assert.equal(last.error, true);
+  assert.equal(last.code, "PP-ATTACH-INPUT-NOT-FOUND"); assert.equal(last.attach, "none"); assert.equal(last.inputs.camera, 1);
+  assert.match(last.text, /添付・入力・送信は行っていません/); assert.match(last.text, /Ctrl\+V/);
+  assert.doesNotMatch(last.text, /adapter|\.js|添付操作済み/);
+  f.state.noInput = false; f.state.statuses.length = 0; f.start(); await f.finish();
+  assert.equal(f.state.attachCalls, 1); assert.equal(f.state.statuses.at(-1).done, true);
+}));
+test("inputの描画遅延は短く待ってから1回だけ添付する", () => scenario({ inputDelay: 3 }, ({ state }) => {
+  assert.equal(state.attachCalls, 1); assert.equal(state.statuses.at(-1).done, true);
+}));
+test("Geminiはinputがなければ従来どおり貼り付けで1回だけ添付する", () => scenario({ gemini: true, noInput: true }, ({ state }) => {
+  assert.equal(state.pasteCalls, 1); assert.equal(state.attachCalls, 1); assert.equal(state.statuses.at(-1).done, true);
+}));
+test("添付操作後の失敗は再添付・再送信せず、ロックを維持して状況を伝える", () => scenario({ neverReady: true }, async f => {
+  const last = f.state.statuses.at(-1);
+  assert.equal(last.attach, "attempted"); assert.match(last.text, /添付操作を1回行いました/); assert.equal(last.code, "PP-TIMEOUT");
+  f.start(); await new Promise(resolve => setTimeout(resolve, 5));
+  assert.equal(f.state.attachCalls, 1); assert.equal(f.state.sendCalls, 0);
+}));
+test("英語UIの添付先未検出メッセージも開発者向けの案内を含まない", () => scenario({ locale: "en-US", noInput: true }, ({ state }) => {
+  const last = state.statuses.at(-1).text;
+  assert.ok(!/[ぁ-んァ-ン一-龯]/.test(last)); assert.doesNotMatch(last, /adapter|\.js/); assert.match(last, /Ctrl\+V/);
 }));

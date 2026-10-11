@@ -5,8 +5,9 @@
   globalThis.CGCIRunner = true;
   const site = location.origin === "https://gemini.google.com" ? "gemini" : "chatgpt";
   const A = site === "gemini" ? globalThis.CGCIGeminiAdapter : globalThis.CGCIAdapter;
-  let running = false, guarded = false, stage = t("開始前"), controller, panel;
-  let attempted = false, sent = false, changedMode = false;
+  let running = false, guarded = false, stage = t("開始前"), stageId = "idle", controller, panel;
+  // attach: none＝添付操作前、unknown＝操作中に中断し結果不明、attempted＝添付操作を1回実行済み。
+  let attach = "none", sent = false, changedMode = false, failure = null;
   let prepared = false;
   let dismissTimer;
   function closePanel() {
@@ -15,6 +16,9 @@
     panel = null;
   }
   const cleanText = text => text.replace(/\r\n/g, "\n").trim();
+  // 利用者向けの文と、診断用の安定したコードを分けて持つ。
+  const fail = (code, message, extra = {}) => Object.assign(new Error(message), { code, ...extra });
+  function setStage(id, label) { stageId = id; stage = label; }
   function show(text, { error = false, done = false } = {}) {
     clearTimeout(dismissTimer);
     if (!panel) {
@@ -36,13 +40,23 @@
     panel.p.textContent = text;
     panel.buttons.replaceChildren();
     button(t("設定"), () => chrome.runtime.sendMessage({ type: "CGCI_OPTIONS" }).catch(() => {}));
-    if (running) button(t("中止"), () => controller.abort(new Error(t("ユーザーが中止しました。"))));
+    if (running) button(t("中止"), () => controller.abort(fail("PP-CANCELLED", t("ユーザーが中止しました。"))));
     else button(t("閉じる"), closePanel);
+    if (error && failure) {
+      // 詳しい情報は既定で閉じる。本文・画像・URLは含めない。
+      const info = document.createElement("pre");
+      info.hidden = true; info.style.cssText = "white-space:pre-wrap;font:12px/1.5 monospace;background:#f3f3f3;padding:8px;border-radius:6px";
+      info.textContent = t`コード：${failure.code}\n段階：${failure.stageId}\nバージョン：${chrome.runtime.getManifest?.().version || ""}\n添付：${failure.attach}／送信：${failure.sent ? t("あり") : t("なし")}`;
+      const toggle = button(t("詳しい情報"), () => { info.hidden = !info.hidden; toggle.setAttribute("aria-expanded", String(!info.hidden)); });
+      toggle.setAttribute("aria-expanded", "false");
+      panel.buttons.append(info);
+    }
     if (!running && guarded) button(t("残った下書きを確認済み・ロック解除"), () => {
       guarded = false;
       show(t("実行ロックを解除しました。再実行には、残った入力文と添付を自分で処理し、空の入力欄にしてください。"));
     });
-    chrome.runtime.sendMessage({ type: "CGCI_STATUS", text, error, done, stage, site }).catch(() => {});
+    chrome.runtime.sendMessage({ type: "CGCI_STATUS", text, error, done, stage, stageId, site, code: error ? failure?.code : undefined,
+      attach, sent, inputs: error ? failure?.inputs : undefined }).catch(() => {});
     // 完了通知を閉じても、下書き保護のロックは維持する。エラーは確認まで残す。
     if (done && !error) dismissTimer = setTimeout(closePanel, 4000);
   }
@@ -56,16 +70,16 @@
     return b;
   }
   function checkLocation(url) {
-    if (location.href !== url) throw new Error(t("チャットの移動を検出しました。元のチャットの下書きを確認してください。"));
+    if (location.href !== url) throw fail("PP-NAVIGATION", t("チャットの移動を検出しました。元のチャットの下書きを確認してください。"));
   }
   function checkInput() {
-    if (!A.editor() || !A.root()) throw new Error(t("チャット入力欄が見つかりません。通常のChat画面を開いてください。UI変更時はadapter.jsを確認してください。"));
-    if (A.generating() || A.disabled(A.editor())) throw new Error(t("回答生成中、または入力できない状態です。終了後に実行してください。"));
+    if (!A.editor() || !A.root()) throw fail("PP-COMPOSER-NOT-FOUND", t("チャット入力欄が見つかりません。通常のチャット画面を開き、ページを再読み込みしてから再試行してください。"));
+    if (A.generating() || A.disabled(A.editor())) throw fail("PP-BUSY", t("回答生成中、または入力できない状態です。終了後に実行してください。"));
   }
   function empty() {
     checkInput();
-    if (A.text().trim() || A.hasAttachment()) throw new Error(t("既存の入力文または添付があります。内容を自分で確認・処理してから実行してください。"));
-    if (A.otherMode()) throw new Error(t("別のツールが選択されています。自分で解除してから実行してください。"));
+    if (A.text().trim() || A.hasAttachment()) throw fail("PP-DRAFT-EXISTS", t("既存の入力文または添付があります。内容を自分で確認・処理してから実行してください。"));
+    if (A.otherMode()) throw fail("PP-OTHER-TOOL", t("別のツールが選択されています。自分で解除してから実行してください。"));
   }
   function wait(test, timeout = 15000, timeoutDetails) {
     const signal = controller.signal;
@@ -78,7 +92,7 @@
         signal.removeEventListener("abort", abort);
         error ? reject(error) : resolve(value);
       };
-      const abort = () => finish(signal.reason || new Error(t("中止しました。")));
+      const abort = () => finish(signal.reason || fail("PP-CANCELLED", t("中止しました。")));
       const probe = () => {
         try {
           if (signal.aborted) return abort();
@@ -96,7 +110,7 @@
       timer = setTimeout(() => {
         let details = "";
         try { if (timeoutDetails) details = t`\n確認結果：${timeoutDetails()}`; } catch { details = t("\n確認結果を取得できませんでした。"); }
-        finish(new Error(t`時間内に状態を確認できませんでした。画面の状態と通信環境を確認してください。${details}`));
+        finish(fail("PP-TIMEOUT", t`時間内に状態を確認できませんでした。画面の状態と通信環境を確認してください。${details}`));
       }, timeout);
       signal.addEventListener("abort", abort, { once: true });
       probe();
@@ -119,7 +133,7 @@
     const signal = controller.signal;
     return new Promise((resolve, reject) => {
       const abort = () => finish(signal.reason || new Error(t("中止しました。")));
-      const timer = setTimeout(() => finish(new Error(t("クリップボードの読み取りがタイムアウトしました。"))), timeout);
+      const timer = setTimeout(() => finish(fail("PP-CLIPBOARD-TIMEOUT", t("クリップボードの読み取りがタイムアウトしました。"))), timeout);
       let done = false;
       const finish = (error, result) => {
         if (done) return; done = true;
@@ -139,12 +153,12 @@
     } catch { result = await activatedRead(); }
     if (result.error) return null; // 読み取り拒否のみ、実際のCtrl+Vに切り替える。
     const images = result.items.filter(item => item.types.some(t => /^image\/(png|jpeg|webp)$/i.test(t)));
-    if (!images.length) throw new Error(t("クリップボードに対応する画像がありません。Win+Shift+Sで画像をコピーしてください。"));
-    if (images.length !== 1) throw new Error(t("画像が複数あります。画像1枚だけをコピーしてください。"));
+    if (!images.length) throw fail("PP-NO-IMAGE", t("クリップボードに対応する画像がありません。Win+Shift+Sで画像をコピーしてください。"));
+    if (images.length !== 1) throw fail("PP-MULTI-IMAGE", t("画像が複数あります。画像1枚だけをコピーしてください。"));
     const item = images[0];
     const type = ["image/png", "image/jpeg", "image/webp"].find(t => item.types.includes(t));
     const blob = await bounded(item.getType(type), 12000);
-    if (!blob.size || blob.size > 20 * 1024 * 1024) throw new Error(t("画像が空、または20MiBを超えています。小さな画像をコピーしてください。"));
+    if (!blob.size || blob.size > 20 * 1024 * 1024) throw fail("PP-IMAGE-SIZE", t("画像が空、または20MiBを超えています。小さな画像をコピーしてください。"));
     return new File([blob], `clipboard-${Date.now()}.${type.split("/")[1]}`, { type });
   }
   async function nativePaste(url, permissionDenied = true) {
@@ -158,9 +172,9 @@
       }
       const files = [...(event.clipboardData?.files || [])];
       if (files.length !== 1 || !/^image\/(png|jpeg|webp)$/.test(files[0].type) || files[0].size > 20 * 1024 * 1024) {
-        event.preventDefault(); controller.abort(new Error(t("貼り付け内容が対応する画像1枚ではありません。画像をコピーし直してください。"))); return;
+        event.preventDefault(); controller.abort(fail("PP-PASTE-INVALID", t("貼り付け内容が対応する画像1枚ではありません。画像をコピーし直してください。"))); return;
       }
-      attempted = guarded = pasted = true;
+      attach = "attempted"; guarded = pasted = true;
       armed = false;
       // ネイティブpasteはChatGPTのハンドラーに渡す。合成キー入力は使わない。
     };
@@ -190,7 +204,7 @@
     await wait(() => result || cancelled, 120000);
     if (cancelled) return null;
     if (!/^image\/(png|jpeg|webp)$/.test(result.type) || !result.size || result.size > 20 * 1024 * 1024)
-      throw new Error(t("対応する画像1枚（20MiB以内）を選んでください。"));
+      throw fail("PP-FILE-INVALID", t("対応する画像1枚（20MiB以内）を選んでください。"));
     return result;
   }
   async function choosePreset(config, file, warning) {
@@ -226,16 +240,16 @@
   }
   async function selectRatio(ratio, url) {
     if (site !== "gemini" || !ratio) return;
-    stage = t("アスペクト比"); show(t`Geminiのアスペクト比を${ratio}に設定しています。`);
+    setStage("ratio", t("アスペクト比")); show(t`Geminiのアスペクト比を${ratio}に設定しています。`);
     // 比率ボタンは画像モード選択の少し後に描画されるため、出現を待つ。
     let control;
     try { control = await wait(() => { checkLocation(url); const c = A.ratioButton(); return A.disabled(c) ? null : c; }, 8000); }
     catch (error) { if (controller.signal.aborted) throw error; checkLocation(url); control = A.ratioButton(); }
-    if (A.disabled(control)) throw new Error(t("アスペクト比の操作が見つかりません。画面とgemini-adapter.jsを確認してください。"));
+    if (A.disabled(control)) throw fail("PP-RATIO-NOT-FOUND", t("Geminiのアスペクト比の操作が見つかりません。比率はGeminiの画面で手動で選んでください。"));
     if (A.ratioSelected(ratio)) return;
     control.click();
     const item = await wait(() => { checkLocation(url); return A.ratioItem(ratio); }, 8000);
-    if (A.disabled(item)) throw new Error(t("指定したアスペクト比を選択できません。"));
+    if (A.disabled(item)) throw fail("PP-RATIO-UNAVAILABLE", t("指定したアスペクト比を選択できません。"));
     item.click();
     await wait(() => { checkLocation(url); return A.ratioSelected(ratio); }, 8000);
   }
@@ -245,68 +259,77 @@
     await globalThis.PPI18n?.init();
     if (guarded && prepared && !A.text().trim() && !A.hasAttachment() && !A.generating()) guarded = false;
     if (guarded) { running = false; show(t("前回の処理で下書きが残っている可能性があります。画面を確認してください。自動再試行は行いません。"), { error: true }); return; }
-    attempted = sent = changedMode = false;
+    sent = changedMode = false; attach = "none"; failure = null;
     prepared = false;
     controller = new AbortController();
     const url = location.href;
-    const total = setTimeout(() => controller.abort(new Error(t("全体の制限時間（360秒）を超えました。"))), 360000);
+    const total = setTimeout(() => controller.abort(fail("PP-TOTAL-TIMEOUT", t("全体の制限時間（360秒）を超えました。"))), 360000);
     const onNavigation = () => { try { checkLocation(url); } catch (error) { controller.abort(error); } };
     const navigationTimer = setInterval(onNavigation, 250);
     try {
-      stage = t("事前確認"); show(t("1/6 設定と入力欄を確認しています。"));
+      setStage("precheck", t("事前確認")); show(t("1/6 設定と入力欄を確認しています。"));
       const settings = await globalThis.CGCISettings.load();
       const config = { autoSend: settings.device[`${site}Auto`] === true, manualPaste: settings.device.manualPaste === true };
       let preset = settings.config.presets.find(p => p.id === settings.config.defaultId);
-      if (!settings.config.presets.some(p => promptFor(p))) throw new Error(t("プロンプトが未設定です。［設定］から保存してください。"));
-      if (config.autoSend && settings.warning) throw new Error(t`${settings.warning} 自動送信せず停止しました。`);
-      if (config.autoSend && !promptFor(preset)) throw new Error(t("既定プリセットの本文が未設定です。［設定］から保存してください。"));
+      if (!settings.config.presets.some(p => promptFor(p))) throw fail("PP-NO-PROMPT", t("プロンプトが未設定です。［設定］から保存してください。"));
+      if (config.autoSend && settings.warning) throw fail("PP-SYNC-HELD", t`${settings.warning} 自動送信せず停止しました。`);
+      if (config.autoSend && !promptFor(preset)) throw fail("PP-NO-PROMPT", t("既定プリセットの本文が未設定です。［設定］から保存してください。"));
       checkLocation(url); empty();
-      stage = source === "file" ? t("ファイル選択") : t("クリップボード読取");
+      if (source === "file") setStage("file", t("ファイル選択")); else setStage("clipboard", t("クリップボード読取"));
       show(t("2/6 画像を取得しています。"));
       const file = source === "file" ? await chooseFile(config.autoSend ? t`選択後に自動送信します。プリセット：${preset.name}、比率：${site === "gemini" ? preset.ratio || t("指定なし") : t("対象外")}` : t("選択後に設定を確認します。")) : await readFile();
       if (source === "file" && !file) { running = false; show(t("ファイル選択をキャンセルしました。添付・入力・送信はしていません。"), { done: true }); return; }
-      if (!config.autoSend) { stage = t("実行前の選択"); preset = await choosePreset(settings.config, file, settings.warning); }
+      if (!config.autoSend) { setStage("select", t("実行前の選択")); preset = await choosePreset(settings.config, file, settings.warning); }
       const prompt = promptFor(preset);
       checkLocation(url); empty();
       await wait(() => document.hasFocus(), 15000);
       checkLocation(url); empty();
-      stage = t("画像添付"); show(t("3/6 画像を添付しています。処理中は入力欄を操作しないでください。"));
+      setStage("attach", t("画像添付")); show(t("3/6 画像を添付しています。処理中は入力欄を操作しないでください。"));
       if (file && !config.manualPaste) {
         const transfer = new DataTransfer(); transfer.items.add(file);
-        attempted = guarded = true; // change後に失敗しても再添付しない。
-        const input = A.fileInput();
+        let input = A.fileInput();
+        // ChatGPTの添付用inputは描画が遅れる場合があるため、短い上限付きで待つ。この間は何も添付しない。
+        if (!input && site === "chatgpt") {
+          try { input = await wait(() => { checkLocation(url); return A.fileInput(); }, 3000); }
+          catch (error) { if (controller.signal.aborted || error.code !== "PP-TIMEOUT") throw error; }
+        }
+        if (!input && site !== "gemini") throw fail("PP-ATTACH-INPUT-NOT-FOUND", t("画像を自動で添付できませんでした。添付先を特定できなかったため、画像は添付していません。"), { inputs: A.fileInputSummary?.() });
+        checkLocation(url); empty();
+        // ここから先は添付操作の実行。失敗しても自動で別経路から再添付しない。
+        attach = "unknown"; guarded = true;
         if (input) {
           input.files = transfer.files;
           input.dispatchEvent(new Event("change", { bubbles: true }));
-        } else if (site === "gemini") {
+        } else {
           A.editor().focus();
           A.editor().dispatchEvent(new ClipboardEvent("paste", { clipboardData: transfer, bubbles: true, cancelable: true }));
-        } else throw new Error(t("画像用ファイル入力を特定できません。UI変更時はadapter.jsを確認してください。"));
-      } else if (source === "file") throw new Error(t("ファイル選択には自動添付方式が必要です。設定のCtrl+V方式をOFFにしてください。"));
+        }
+        attach = "attempted";
+      } else if (source === "file") throw fail("PP-FILE-NEEDS-AUTO", t("ファイル選択には自動添付方式が必要です。設定の「クリップボード添付に実際のCtrl+Vを使う」をOFFにしてください。"));
       else await nativePaste(url, !file);
-      stage = t("添付完了確認"); show(t("4/6 添付の完了を確認しています。"));
+      setStage("attach-check", t("添付完了確認")); show(t("4/6 添付の完了を確認しています。"));
       await wait(() => {
         checkLocation(url); checkInput();
-        if (A.text().trim()) throw new Error(t("添付中に入力文が変更されました。既存の文は保持しています。"));
-        if (A.uploadError()) throw new Error(t("画像のアップロードに失敗しました。残った添付を確認してください。"));
+        if (A.text().trim()) throw fail("PP-TEXT-CHANGED", t("添付中に入力文が変更されました。既存の文は保持しています。"));
+        if (A.uploadError()) throw fail("PP-UPLOAD-FAILED", t("画像のアップロードに失敗しました。残った添付を確認してください。"));
         return A.attachmentReady();
       }, 45000, A.attachmentDiagnostic);
-      stage = t("画像作成モード"); show(t("5/6 画像作成モードを選択しています。"));
+      setStage("mode", t("画像作成モード")); show(t("5/6 画像作成モードを選択しています。"));
       if (!A.modeSelected()) {
         const add = A.add();
-        if (A.disabled(add)) throw new Error(t("ツールメニューを開けません。画像添付は保持しています。"));
+        if (A.disabled(add)) throw fail("PP-MENU-NOT-FOUND", t("ツールメニューを開けません。画像添付は保持しています。"));
         if (add.getAttribute("aria-expanded") !== "true") add.click();
         const item = await wait(() => { checkLocation(url); return A.modeItem(); }, 8000);
-        if (A.disabled(item)) throw new Error(t("画像作成モードが利用できません。アカウントの利用条件を確認してください。"));
+        if (A.disabled(item)) throw fail("PP-MODE-UNAVAILABLE", t("画像作成モードが利用できません。アカウントの利用条件を確認してください。"));
         changedMode = guarded = true; item.click();
         await wait(() => { checkLocation(url); return A.modeSelected(); }, 8000);
       }
       checkLocation(url); checkInput();
       await selectRatio(preset.ratio, url);
       checkLocation(url); checkInput();
-      if (A.text().trim()) throw new Error(t("モード選択後に入力文があります。上書きせず停止しました。"));
-      if (!A.attachmentReady()) throw new Error(t("モード切替後に添付完了を確認できません。画面を確認してください。"));
-      stage = t("プロンプト入力"); show(t("6/6 保存したプロンプトを入力しています。"));
+      if (A.text().trim()) throw fail("PP-TEXT-CHANGED", t("モード選択後に入力文があります。上書きせず停止しました。"));
+      if (!A.attachmentReady()) throw fail("PP-ATTACH-LOST", t("モード切替後に添付完了を確認できません。画面を確認してください。"));
+      setStage("prompt", t("プロンプト入力")); show(t("6/6 保存したプロンプトを入力しています。"));
       A.insert(prompt);
       await wait(() => {
         checkLocation(url); checkInput();
@@ -315,10 +338,10 @@
       // 一度安定したあとに再検証。固定待機だけで成功扱いにしない。
       await bounded(new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))), 3000);
       checkLocation(url); checkInput();
-      if (cleanText(A.text()) !== prompt || !A.modeSelected() || !A.attachmentReady() || (site === "gemini" && !A.ratioSelected(preset.ratio))) throw new Error(t("最終確認で入力状態が変わりました。送信せず停止しました。"));
+      if (cleanText(A.text()) !== prompt || !A.modeSelected() || !A.attachmentReady() || (site === "gemini" && !A.ratioSelected(preset.ratio))) throw fail("PP-FINAL-CHECK", t("最終確認で入力状態が変わりました。送信せず停止しました。"));
       if (config.autoSend) {
-        stage = t("送信");
-        if (!document.hasFocus() || A.disabled(A.send())) throw new Error(t("送信できません。対象サイトを前面にして内容を確認してください。"));
+        setStage("send", t("送信"));
+        if (!document.hasFocus() || A.disabled(A.send())) throw fail("PP-SEND-UNAVAILABLE", t("送信できません。対象サイトを前面にして内容を確認してください。"));
         show(t("確認済みの画像とプロンプトを1回だけ送信します。"));
         const beforeIds = A.messageIds();
         // ここまで対象チャットを固定。送信後には追加操作をせず、会話への反映だけを読む。
@@ -326,7 +349,7 @@
         clearInterval(navigationTimer);
         sent = true; guarded = true; A.send().click();
         await wait(() => {
-          if (location.origin !== new URL(url).origin) throw new Error(t("送信後に対象サイト以外へ移動しました。送信履歴を確認してください。"));
+          if (location.origin !== new URL(url).origin) throw fail("PP-SEND-NAVIGATION", t("送信後に対象サイト以外へ移動しました。送信履歴を確認してください。"));
           return A.sentMessageVisible(prompt, beforeIds);
         }, 15000, () => t("今回の画像と本文が新しい会話メッセージに反映されたことを確認できませんでした。送信履歴を確認してください。"));
         guarded = false;
@@ -337,11 +360,22 @@
       }
     } catch (error) {
       running = false;
+      const code = typeof error?.code === "string" ? error.code : (stageId === "attach" ? "PP-ATTACH-ERROR" : "PP-ERROR");
+      failure = { code, stageId, attach, sent, inputs: error?.inputs };
+      // 何も操作していない段階の停止は、ロックせずそのまま再試行できる。
+      if (attach === "none" && !sent && !changedMode) guarded = false;
       const remains = sent ? t("送信操作は1回実行済みです。送信結果が不明でも自動再送はしません。履歴を確認してください。") :
-        attempted ? t("添付操作済みです。画像が後から反映される場合もあります。添付・入力文を自分で確認してください。") : t("添付操作は実行していません。");
-      const draft = A.text().trim() ? t("入力文が残っています。") : t("現在、入力文は検出されていません。");
-      show(t`${stage}で停止：${error.message}\n${remains}\n${draft}${A.modeSelected() ? t("画像作成モードは選択済みです。") : changedMode ? t("モード選択を試みました。画面を確認してください。") : ""}\n残った内容を削除・上書きしません。`, { error: true });
-      console.warn(t("[CGCI] 停止段階:"), stage); // 画像やプロンプトはログへ出さない。
+        attach === "attempted" ? t("画像の添付操作を1回行いました。画像が後から表示される場合があります。入力欄を確認してください。") :
+        attach === "unknown" ? t("画像の添付操作を始めましたが、結果を確認できません。入力欄を確認してください。") :
+        t("画像の添付・入力・送信は行っていません。");
+      const hint = attach === "none" && !sent && ["PP-ATTACH-INPUT-NOT-FOUND", "PP-ATTACH-ERROR"].includes(code)
+        ? (source === "file" ? t("ページを再読み込みして再試行してください。解決しない場合は、画像をクリップボードにコピーして実行するか、サイトの添付ボタンから手動で添付してください。")
+          : t("ページを再読み込みして再試行してください。解決しない場合は、設定で「クリップボード添付に実際のCtrl+Vを使う」をONにしてください。"))
+        : attach !== "none" && !sent && ["PP-TIMEOUT", "PP-UPLOAD-FAILED"].includes(code) && source !== "file"
+          ? t("入力欄の画像を確認・削除してから再実行してください。続けて失敗する場合は、設定で「クリップボード添付に実際のCtrl+Vを使う」をONにしてください。") : "";
+      const draft = A.text().trim() ? t("入力文が残っています。ページを再読み込みする前に確認してください。") : t("現在、入力文は検出されていません。");
+      show(t`${stage}で停止：${error.message}\n${remains}\n${draft}${A.modeSelected() ? t("画像作成モードは選択済みです。") : changedMode ? t("モード選択を試みました。画面を確認してください。") : ""}\n残った内容を削除・上書きしません。${hint ? `\n${hint}` : ""}`, { error: true });
+      console.warn(t("[CGCI] 停止段階:"), stageId, code); // 画像やプロンプトはログへ出さない。
     } finally {
       clearTimeout(total); clearInterval(navigationTimer); controller.abort();
       running = false;

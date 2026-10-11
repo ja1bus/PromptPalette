@@ -13,7 +13,7 @@ This repository contains the source code of the publicly released PromptPalette.
 - Up to 20 presets. The text can be shared by both sites or saved separately for each site
 - With auto-send off (the default), you choose a preset and ratio when you run it, check the result and send it yourself. With auto-send on, it sends once using the default preset
 - Runs from the extension icon or keyboard shortcuts (Ctrl+Shift+Y by default for a clipboard image; none for an image file)
-- Exports and imports the settings (JSON), and can optionally share presets between PCs through Chrome sync (off by default)
+- Exports and imports the settings (JSON), and can optionally share presets between PCs through Chrome sync (off by default). Incoming updates are checked before they are applied; updates that empty all presets or delete many of them, and simultaneous edits, wait for the user to choose. Earlier presets are kept as backups on this PC before they are overwritten
 - Display language: Auto, English or Japanese
 
 It checks for an existing draft, attachments or a response being generated, and stops when the page is not in the expected state. It never retries attaching or sending automatically after a failure. It uses only the `activeTab`, `scripting`, `clipboardRead` and `storage` permissions, and accesses only the tab where you run it from the icon or a shortcut. Images are handled only inside the page and are neither stored nor sent anywhere other than the site you attach them to.
@@ -72,7 +72,7 @@ node --test "tests/*.test.cjs"
 | `background.js` | Service worker: starting a run, injecting scripts, validating messages, saving settings and Chrome sync |
 | `content.js` | In-page logic: getting the image, attaching it, selecting the mode and ratio, entering text, sending, and the progress panel |
 | `adapter.js` / `gemini-adapter.js` | Detecting and operating the page elements of ChatGPT and Gemini |
-| `settings.js` | Settings format, validation and migration |
+| `settings.js` | Settings format, validation and migration, sharing between PCs (sync) and backups |
 | `options.html` / `options.css` / `options.js` | Settings page |
 | `i18n.js` / `locale-data.js` / `_locales/` | Display languages (English and Japanese) |
 | `icons/` | Icons |

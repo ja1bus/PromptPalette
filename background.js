@@ -30,6 +30,18 @@ async function start(tab, source) {
     await chrome.runtime.openOptionsPage();
   }).finally(() => starting.delete(tab.id));
 }
+// 診断には本文・画像・URLを含めない。コード・段階・件数だけを検証して残す。
+function diagnostic(message, sender) {
+  const pick = (value, pattern) => typeof value === "string" && pattern.test(value) ? value : undefined;
+  const inputs = {};
+  if (message.inputs && typeof message.inputs === "object")
+    for (const key of ["total", "camera", "image", "media", "generic", "other", "busy"])
+      if (Number.isInteger(message.inputs[key]) && message.inputs[key] >= 0 && message.inputs[key] < 100) inputs[key] = message.inputs[key];
+  return { version: chrome.runtime.getManifest?.().version, site: new URL(sender.url).hostname, stage: message.stage.slice(0, 80),
+    stageId: pick(message.stageId, /^[a-z-]{1,30}$/), code: pick(message.code, /^PP-[A-Z0-9-]{1,40}$/),
+    attach: pick(message.attach, /^(none|unknown|attempted)$/), sent: message.sent === true, inputs,
+    error: !!message.error, done: !!message.done, time: new Date().toISOString() };
+}
 chrome.action.onClicked.addListener(tab => void start(tab));
 chrome.commands.onCommand.addListener(async command => {
   if (!["clipboard-image", "file-image"].includes(command)) return;
@@ -41,9 +53,9 @@ chrome.runtime.onMessage.addListener((message, sender, reply) => {
     // 設定操作は自拡張のoptionsページからだけ受け付ける。contentは読込だけ。
     const options = sender.url === chrome.runtime.getURL("options.html");
     if (sender.id !== chrome.runtime.id || (!options && !(isChat(sender.url) && sender.frameId === 0 && message.method === "load"))) return;
-    if (!Array.isArray(message.args) || !["load", "pull", "save", "setEnabled", "restore"].includes(message.method)) return;
+    if (!Array.isArray(message.args) || !globalThis.CGCISettings.methods.includes(message.method)) return;
     globalThis.PPI18n.init().then(() => globalThis.CGCISettings.execute(message.method, message.args))
-      .then(state => reply({ ok: true, state })).catch(error => reply({ ok: false, error: error.message }));
+      .then(state => reply({ ok: true, state })).catch(error => reply({ ok: false, error: error.message, code: typeof error.code === "string" ? error.code : undefined }));
     return true;
   }
   if (sender.id !== chrome.runtime.id || !isChat(sender.url) || sender.frameId !== 0) return;
@@ -52,21 +64,22 @@ chrome.runtime.onMessage.addListener((message, sender, reply) => {
     return true;
   }
   if (message?.type === "CGCI_STATUS" && typeof message.text === "string") {
-    if (typeof message.stage === "string") chrome.storage.local.set({ diagnostic2: {
-      site: new URL(sender.url).hostname, stage: message.stage.slice(0, 80), error: !!message.error,
-      done: !!message.done, time: new Date().toISOString()
-    } }).catch(() => {});
+    if (typeof message.stage === "string") chrome.storage.local.set({ diagnostic2: diagnostic(message, sender) }).catch(() => {});
     notice(sender.tab.id, message.text.slice(0, 2000), message.error ? "!" : message.done ? "✓" : "…")
       .then(() => reply({ ok: true })).catch(() => reply({ ok: false }));
     return true;
   }
 });
 
-// Chromeからの到着を監視する。ヘッダーだけでなく、分割データの後着も再確認する。
+// Chromeからの到着を監視する。取り込みの判断はsettings.jsで行い、ここからは送信しない。
 const refreshSync = () => globalThis.PPI18n.init().then(() => globalThis.CGCISettings.load()).catch(() => {});
 chrome.runtime.onStartup.addListener(() => void refreshSync());
 chrome.runtime.onInstalled.addListener(() => void refreshSync());
+// 分割データは項目ごとに届くため、短くまとめてから確認する。workerが止まっても次の到着・起動で再確認する。
+let refreshTimer;
 chrome.storage.onChanged.addListener((changes, area) => {
-  if (area === "sync" && Object.keys(changes).some(key => key === "cgciHead" || /^cgciPart\d+$/.test(key)))
-    void refreshSync();
+  if (area === "sync" && Object.keys(changes).some(key => /^pp3[hc]\./.test(key) || key === "cgciHead" || /^cgciPart\d+$/.test(key))) {
+    clearTimeout(refreshTimer);
+    refreshTimer = setTimeout(() => void refreshSync(), 300);
+  }
 });

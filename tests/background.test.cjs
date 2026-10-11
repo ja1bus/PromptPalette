@@ -3,16 +3,16 @@ const {test}=require("node:test"); const assert=require("node:assert/strict"); c
 function fixture(url="https://chatgpt.com/",defaultSource="file") {
  const listeners={},starts=[],injected=[],operations=[]; let opened=0;
  const tab={id:1,url};
- const ctx=vm.createContext({URL,Set,Date,CGCISettings:{load:async()=>operations.push("load"),execute:async(method,args)=>{operations.push({method,args}); return {enabled:true};}},PPI18n:{init:async()=>{}},chrome:{
+ const ctx=vm.createContext({URL,Set,Date,setTimeout,clearTimeout,CGCISettings:{methods:["load","status","check","save","setEnabled","start","resend","resolve","replacePreview","replace","backups","restore","cleanup","diagnostics"],load:async()=>operations.push("load"),execute:async(method,args)=>{operations.push({method,args}); return {enabled:true};}},PPI18n:{init:async()=>{}},chrome:{
   action:{onClicked:{addListener:f=>listeners.icon=f},setBadgeText:async()=>{},setTitle:async()=>{}},
   commands:{onCommand:{addListener:f=>listeners.command=f}},
-  runtime:{id:"ext",getURL:path=>`chrome-extension://ext/${path}`,onStartup:{addListener:f=>listeners.startup=f},onInstalled:{addListener:f=>listeners.installed=f},onMessage:{addListener:f=>listeners.message=f},openOptionsPage:async()=>{opened++;}},
+  runtime:{id:"ext",getManifest:()=>({version:"3.0.0"}),getURL:path=>`chrome-extension://ext/${path}`,onStartup:{addListener:f=>listeners.startup=f},onInstalled:{addListener:f=>listeners.installed=f},onMessage:{addListener:f=>listeners.message=f},openOptionsPage:async()=>{opened++;}},
   storage:{onChanged:{addListener:f=>listeners.changed=f},local:{get:async()=>({device2:{source:defaultSource}}),set:async()=>{}}},
   tabs:{query:async()=>[tab],sendMessage:async(id,msg)=>starts.push(msg)},
   scripting:{executeScript:async spec=>injected.push(spec)}
  }});
  vm.runInContext(fs.readFileSync(path.join(__dirname,"../background.js"),"utf8"),ctx);
- return {listeners,starts,injected,operations,tab,opened:()=>opened};
+ return {listeners,starts,injected,operations,tab,ctx,opened:()=>opened};
 }
 const tick=()=>new Promise(resolve=>setImmediate(resolve));
 test("アイコンはPC既定、両コマンドは入力元を固定",async()=>{
@@ -30,10 +30,21 @@ test("未対応コマンドは起動しない",async()=>{
  const f=fixture(); await f.listeners.command("unknown"); await tick(); assert.equal(f.starts.length,0);
 });
 
-test("起動・更新・同期チャンク後着で確認しローカル変更には反応しない",async()=>{
- const f=fixture(); f.listeners.startup(); f.listeners.installed(); f.listeners.changed({cgciPart0:{newValue:{}}},"sync");
- f.listeners.changed({cgciHead:{newValue:{}}},"sync"); f.listeners.changed({config2:{}},"local"); await tick();
- assert.deepEqual(f.operations,["load","load","load","load"]);
+test("起動・更新・同期データ到着で確認し、分割到着はまとめ、ローカル変更には反応しない",async()=>{
+ const f=fixture(); f.listeners.startup(); f.listeners.installed(); await tick();
+ f.listeners.changed({"pp3c.abcd1234.0":{newValue:{}}},"sync"); f.listeners.changed({"pp3h.abcd1234":{newValue:{}}},"sync");
+ f.listeners.changed({cgciHead:{newValue:{}}},"sync"); f.listeners.changed({config2:{}},"local"); f.listeners.changed({other:{}},"sync");
+ await new Promise(resolve=>setTimeout(resolve,350));
+ assert.deepEqual(f.operations,["load","load","load"]);
+});
+test("実行の診断はコード・段階・件数だけを検証して保存する",async()=>{
+ const f=fixture(); let saved={}; f.ctx.chrome.storage.local.set=async v=>{saved={...saved,...v};};
+ f.listeners.message({type:"CGCI_STATUS",text:"本文を含む表示",stage:"画像添付",stageId:"attach",code:"PP-ATTACH-INPUT-NOT-FOUND",attach:"none",sent:false,inputs:{total:4,camera:1,secret:"x"},error:true},{id:"ext",url:"https://chatgpt.com/c/abc",frameId:0,tab:{id:1}},()=>{});
+ await tick(); const d=saved.diagnostic2;
+ assert.equal(d.code,"PP-ATTACH-INPUT-NOT-FOUND"); assert.equal(d.site,"chatgpt.com"); assert.equal(d.inputs.camera,1);
+ assert.equal(d.inputs.secret,undefined); assert.ok(!JSON.stringify(d).includes("/c/abc")); assert.ok(!JSON.stringify(d).includes("本文"));
+ f.listeners.message({type:"CGCI_STATUS",text:"x",stage:"s",code:"rm -rf",stageId:"BAD ID"},{id:"ext",url:"https://chatgpt.com/",frameId:0,tab:{id:1}},()=>{});
+ await tick(); assert.equal(saved.diagnostic2.code,undefined); assert.equal(saved.diagnostic2.stageId,undefined);
 });
 test("設定書き込みはoptionsだけ、サイトからは読込だけ許可",async()=>{
  const f=fixture(), replies=[]; const reply=x=>replies.push(x);

@@ -35,6 +35,12 @@
   A.attachmentReady = () => A.previewImages().length === 1 && A.previewImages().every(e => e.complete && e.naturalWidth > 0) &&
     !A.uploadBusy() && !A.uploadError() && !A.disabled(A.send());
   A.attachmentDiagnostic = () => t`画像枚数=${A.previewImages().length}、画像読込=${A.previewImages().every(e => e.complete && e.naturalWidth > 0) ? "OK" : "NG"}、処理中=${A.uploadBusy() ? t("あり") : t("なし")}、送信ボタン検出=${A.send() ? "OK" : "NG"}、送信可能=${!A.disabled(A.send()) ? "OK" : "NG"}`;
+  A.fileInputs = () => [...document.querySelectorAll("input[type=file]")];
+  A.fileInputSummary = () => {
+    const summary = { total: 0, camera: 0, image: 0, media: 0, generic: 0, other: 0, busy: 0 };
+    for (const e of A.fileInputs()) { summary.total++; summary[B.inputKind(e)]++; }
+    return summary;
+  };
   A.fileInput = () => A.unique([...document.querySelectorAll("input[type=file]")].filter(e => !e.disabled && !e.files?.length && /image\//i.test(e.accept)));
   A.insert = text => {
     const e = A.editor();

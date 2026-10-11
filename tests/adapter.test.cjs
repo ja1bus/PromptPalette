@@ -103,3 +103,41 @@ test("診断は本文を出さず、不成立の条件だけを示す", () => {
   assert.match(result, /画像作成モード=OK/);
   assert.ok(!result.includes("秘密の文") && !result.includes("別の文"));
 });
+const fileInput = attrs => ({ disabled: false, files: null, getAttribute: name => attrs[name] ?? null, hasAttribute: name => name in attrs });
+function withInputs(inputs, fn) {
+  const saved = { root: A.root };
+  A.root = () => ({ querySelectorAll: selector => selector.includes("file") ? inputs : [] });
+  try { fn(); } finally { Object.assign(A, saved); }
+}
+test("実画面の4種類のinputからカメラを除外し写真を添付を選ぶ", () => {
+  const camera = fileInput({ accept: "image/*", "aria-label": "写真を撮る", capture: "environment" });
+  const photo = fileInput({ accept: "image/*", "aria-label": "写真を添付", multiple: "" });
+  const media = fileInput({ accept: "image/*,video/*", "aria-label": "写真または動画を添付", multiple: "" });
+  const any = fileInput({ "aria-label": "ファイルを添付", multiple: "" });
+  withInputs([camera, photo, media, any], () => {
+    assert.equal(A.fileInput(), photo);
+    assert.equal(JSON.stringify(A.fileInputSummary()), JSON.stringify({ total: 4, camera: 1, image: 1, media: 1, generic: 1, other: 0, busy: 0 }));
+  });
+});
+test("英語ラベルと属性差異でも意味で選び、カメラだけなら選ばない", () => {
+  const camera = fileInput({ accept: "image/*", "aria-label": "Take photo" });
+  const photo = fileInput({ accept: "image/png,image/jpeg,.webp", "aria-label": "Attach photos" });
+  const media = fileInput({ accept: "image/*, video/*", "aria-label": "Attach photos or videos" });
+  withInputs([camera, media, photo], () => assert.equal(A.fileInput(), photo));
+  withInputs([camera, media], () => assert.equal(A.fileInput(), media));
+  withInputs([camera], () => assert.equal(A.fileInput(), null));
+  withInputs([fileInput({ "aria-label": "Upload files" })], () => assert.ok(A.fileInput()));
+  withInputs([fileInput({ accept: "application/pdf", "aria-label": "Attach PDF" })], () => assert.equal(A.fileInput(), null));
+});
+test("同じ優先度で判別できない候補は先頭を採用せず停止する", () => {
+  const a = fileInput({ accept: "image/*" }), b = fileInput({ accept: "image/*" });
+  withInputs([a, b], () => assert.equal(A.fileInput(), null));
+  const labelled = fileInput({ accept: "image/*", "aria-label": "写真を添付" });
+  withInputs([a, labelled], () => assert.equal(A.fileInput(), labelled));
+  const used = fileInput({ accept: "image/*", "aria-label": "写真を添付" }); used.files = [{}];
+  withInputs([used], () => assert.equal(A.fileInput(), null));
+});
+test("現在のcomposer外のinputは対象にしない", () => {
+  const saved = A.root; A.root = () => null;
+  try { assert.equal(A.fileInput(), null); assert.equal(A.fileInputSummary().total, 0); } finally { A.root = saved; }
+});

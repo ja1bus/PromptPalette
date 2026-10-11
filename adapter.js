@@ -96,10 +96,39 @@
     const flag = value => value ? "OK" : "NG";
     return t`本文一致=${flag(status.textMatches)}（入力${status.textLength}文字／設定${status.expectedLength}文字）、送信可能=${flag(status.sendEnabled)}、画像作成モード=${flag(status.modeSelected)}、添付完了=${flag(status.attachmentReady)}`;
   };
+  // 入力欄内のfile inputを属性と意味で分類する。実画面（2026-10）では写真を撮る（capture）、写真を添付（image/*）、
+  // 写真または動画を添付（image/*,video/*）、ファイルを添付（accept指定なし）が同時に存在した。
+  A.inputLabel = e => (e.getAttribute("aria-label") || e.getAttribute("title") || "").trim();
+  A.inputKind = e => {
+    if (e.disabled || e.files?.length) return "busy";
+    const label = A.inputLabel(e);
+    if (e.hasAttribute("capture") || /写真を撮る|撮影|カメラ|take (?:a )?(?:photo|picture)|camera/i.test(label)) return "camera";
+    const accept = (e.getAttribute("accept") || "").split(",").map(s => s.trim().toLowerCase()).filter(Boolean);
+    if (!accept.length) return "generic";
+    const image = a => a === "image/*" || /^image\/[\w.+-]+$/.test(a) || /^\.(png|jpe?g|webp|gif)$/.test(a);
+    if (!accept.some(image)) return "other";
+    if (accept.every(image)) return "image";
+    return accept.every(a => image(a) || /^video\//.test(a)) ? "media" : "other";
+  };
+  A.fileInputs = () => [...(A.root()?.querySelectorAll("input[type='file']") || [])];
+  A.fileInputSummary = () => {
+    const summary = { total: 0, camera: 0, image: 0, media: 0, generic: 0, other: 0, busy: 0 };
+    for (const e of A.fileInputs()) { summary.total++; summary[A.inputKind(e)]++; }
+    return summary;
+  };
+  // 画像専用→画像と動画→ファイル添付の順に、同じ優先度の候補が1つに定まる場合だけ選ぶ。先頭候補では選ばない。
   A.fileInput = () => {
-    const inputs = [...(A.root()?.querySelectorAll("input[type='file']") || [])].filter(e => !e.disabled && !e.files?.length);
-    const images = inputs.filter(e => e.accept.trim() === "image/*");
-    return A.unique(images) || A.unique(inputs.filter(e => /image\//i.test(e.accept)));
+    const inputs = A.fileInputs();
+    const attachLabel = /添付|アップロード|追加|attach|upload|add/i;
+    for (const kind of ["image", "media", "generic"]) {
+      let list = inputs.filter(e => A.inputKind(e) === kind);
+      if (kind === "generic") list = list.filter(e => attachLabel.test(A.inputLabel(e)));
+      if (!list.length) continue;
+      // 同じ優先度に複数あれば添付用のラベルで絞る。それでも定まらなければ下位へ進まず停止する。
+      if (list.length > 1) list = list.filter(e => attachLabel.test(A.inputLabel(e)));
+      return A.unique(list);
+    }
+    return null;
   };
   A.insert = text => {
     const e = A.editor();

@@ -26,9 +26,6 @@
   "m008": {
     "message": "The chat changed. Check the draft in the original chat."
   },
-  "m009": {
-    "message": "The chat composer was not found. Open a regular chat. If the UI changed, check the site adapter."
-  },
   "m010": {
     "message": "A response is being generated, or the composer is unavailable. Wait and try again."
   },
@@ -122,9 +119,6 @@
   "m040": {
     "message": "Setting Gemini aspect ratio to {0}."
   },
-  "m041": {
-    "message": "The aspect ratio control was not found. Check the page and gemini-adapter.js."
-  },
   "m042": {
     "message": "The requested aspect ratio is unavailable."
   },
@@ -181,12 +175,6 @@
   },
   "m060": {
     "message": "3/6 Attaching the image. Do not edit the composer during this operation."
-  },
-  "m061": {
-    "message": "Could not identify the image upload input. Check adapter.js if the UI changed."
-  },
-  "m062": {
-    "message": "File selection requires automatic attachment. Turn off manual Ctrl+V in Settings."
   },
   "m063": {
     "message": "Attachment verification"
@@ -251,15 +239,6 @@
   "m083": {
     "message": "Send was clicked once. It will not be repeated even if the result is unknown. Check the chat history."
   },
-  "m084": {
-    "message": "Attachment was attempted and may appear later. Review the attachments and text yourself."
-  },
-  "m085": {
-    "message": "No attachment operation was performed."
-  },
-  "m086": {
-    "message": "Text remains in the composer. "
-  },
   "m087": {
     "message": "No composer text is currently detected. "
   },
@@ -268,9 +247,6 @@
   },
   "m089": {
     "message": "Mode selection was attempted. Check the page."
-  },
-  "m090": {
-    "message": "Stopped at {0}: {1}\n{2}\n{3}{4}\nRemaining content will not be deleted or overwritten."
   },
   "m091": {
     "message": "[PromptPalette] Stopped at:"
@@ -287,44 +263,11 @@
   "m095": {
     "message": "Default"
   },
-  "m096": {
-    "message": "Sync capacity exceeded. Turn off sync."
-  },
-  "m097": {
-    "message": "Sync capacity exceeded. Reduce the presets or turn off sync."
-  },
-  "m098": {
-    "message": "Invalid sync data format."
-  },
-  "m099": {
-    "message": "Sync data is incomplete. Wait a moment and reload."
-  },
-  "m100": {
-    "message": "Sync saving is incomplete. This PC's settings are preserved. Save again or turn off sync in Settings."
-  },
-  "m101": {
-    "message": "No synced settings were found. Using this PC's saved settings."
-  },
-  "m102": {
-    "message": "Could not read synced settings. Using this PC's saved settings. Check Settings."
-  },
   "m103": {
     "message": "Invalid device settings."
   },
-  "m104": {
-    "message": "Settings changed in another window or PC. Export your edits, then reload."
-  },
-  "m105": {
-    "message": "Saved on this PC, but sync saving failed. Check capacity and Chrome sync settings. Enabling sync has not completed."
-  },
   "m106": {
     "message": "(Unnamed)"
-  },
-  "m107": {
-    "message": "Settings were loaded from Chrome sync storage."
-  },
-  "m108": {
-    "message": "Sync is off: settings are saved on this PC."
   },
   "m109": {
     "message": "You can save up to 20 presets."
@@ -338,9 +281,6 @@
   "m112": {
     "message": "Remove this preset from the editor? You can reload to restore it before saving."
   },
-  "m113": {
-    "message": "Saved to Chrome sync storage."
-  },
   "m114": {
     "message": "Saved on this PC."
   },
@@ -349,9 +289,6 @@
   },
   "m116": {
     "message": "This settings file is not supported."
-  },
-  "m117": {
-    "message": "Imported into the editor. Auto-send and sync are off. Save to apply."
   },
   "m118": {
     "message": "Enter chrome://extensions/shortcuts in Chrome's address bar."
@@ -362,14 +299,8 @@
   "m120": {
     "message": "Select the diagnostics text and press Ctrl+C to copy."
   },
-  "m121": {
-    "message": "Synced settings changed. Your edits are preserved. Export them before reloading if needed."
-  },
   "m122": {
     "message": "No operation has been recorded."
-  },
-  "m123": {
-    "message": "Could not load settings. Check extension errors."
   },
   "m124": {
     "message": "The composer changed or already contains text."
@@ -464,27 +395,6 @@
   "m154": {
     "message": "Use a real Ctrl+V paste for clipboard attachments"
   },
-  "m155": {
-    "message": "Sync across PCs"
-  },
-  "m156": {
-    "message": "Sync settings across PCs"
-  },
-  "m157": {
-    "message": "Off by default. Requires the same Google account and extension ID, with Chrome sync enabled. Presets and the default selection are stored in Google's sync service. Images, auto-send, input source and diagnostics are not synced."
-  },
-  "m158": {
-    "message": "When enabling sync"
-  },
-  "m159": {
-    "message": "Upload this PC's presets to sync"
-  },
-  "m160": {
-    "message": "Import presets from sync"
-  },
-  "m161": {
-    "message": "Turning sync off keeps presets on this PC and does not delete synced data. Images, auto-send, input source, language and diagnostics are not synced."
-  },
   "m162": {
     "message": "Save all settings"
   },
@@ -496,9 +406,6 @@
   },
   "m165": {
     "message": "Import settings file"
-  },
-  "m166": {
-    "message": "Import loads settings into the editor. Click Save all settings to apply. Auto-send and sync are turned off. Exported files contain your prompts."
   },
   "m167": {
     "message": "Keyboard shortcuts"
@@ -518,11 +425,476 @@
   "m172": {
     "message": "Diagnostics"
   },
-  "m173": {
-    "message": "Diagnostics contain version and operation status, not images, prompts or chat URLs. Copying diagnostics replaces your clipboard contents."
-  },
   "m174": {
     "message": "Images are used only during a run and are not stored. No data is sent to our own servers. Attachments and prompts go to the current ChatGPT or Gemini chat, subject to that service's account and usage terms."
+  },
+  "m300": {
+    "message": "Saves presets and Device settings. While sharing, preset changes are also sent to your other PCs."
+  },
+  "m301": {
+    "message": "Sharing with other PCs"
+  },
+  "m302": {
+    "message": "Share presets with my other PCs"
+  },
+  "m303": {
+    "message": "Only presets and the default preset are shared. Device settings, display language, images and diagnostics are not shared. The switch is saved on this PC immediately; you do not need Save all settings for it."
+  },
+  "m304": {
+    "message": "Start sharing with this PC's presets"
+  },
+  "m305": {
+    "message": "Send unsent changes"
+  },
+  "m306": {
+    "message": "Check for updates"
+  },
+  "m307": {
+    "message": "If presets from your other PCs do not arrive"
+  },
+  "m308": {
+    "message": "Sign in to Chrome with the same Google account on every PC, and make sure Extensions is turned on in Chrome sync."
+  },
+  "m309": {
+    "message": "Update PromptPalette to the same version on every PC and turn sharing on."
+  },
+  "m310": {
+    "message": "Chrome sync can take some time. Check for updates looks at what has already reached this PC; it does not force a download from Google."
+  },
+  "m311": {
+    "message": "If no PC has started sharing yet, click Start sharing with this PC's presets on one PC that has your presets."
+  },
+  "m312": {
+    "message": "If you are in a hurry, you can also move presets with Export settings / Import settings file."
+  },
+  "m313": {
+    "message": "Advanced (restore, replace, clean up)"
+  },
+  "m314": {
+    "message": "Restore from a backup (this PC only)"
+  },
+  "m315": {
+    "message": "Up to 20 earlier versions (6 of them reserved for important moments) are kept on this PC before overwrites and received updates. Restoring affects this PC only and is not sent to other PCs automatically. Removing the extension also deletes these backups."
+  },
+  "m316": {
+    "message": "Version to restore "
+  },
+  "m317": {
+    "message": "Restore the selected version on this PC"
+  },
+  "m318": {
+    "message": "Replace shared presets with this PC's presets"
+  },
+  "m319": {
+    "message": "Replaces the shared presets on your other PCs with this PC's full set. The impact is shown first. If many presets would be removed, other PCs ask before applying. Each PC keeps the previous presets in its backups."
+  },
+  "m320": {
+    "message": "Replace shared presets with this PC's presets"
+  },
+  "m321": {
+    "message": "Clean up old sync data"
+  },
+  "m322": {
+    "message": "Frees space by deleting old updates already imported by this PC and sync data used by old versions (2.1.0 and earlier). The current shared presets and this PC's presets are not deleted. PCs on old versions will no longer receive this sync data."
+  },
+  "m323": {
+    "message": "Clean up old sync data"
+  },
+  "m324": {
+    "message": "Updating from 2.1.0 or earlier"
+  },
+  "m325": {
+    "message": "Version 3.0.0 uses a new sync method. Shared presets do not move automatically between it and PCs on old versions. Update every PC to 3.0.0. Exporting settings on each PC before updating is recommended. Changes from PCs on old versions can be applied after you review them."
+  },
+  "m326": {
+    "message": "Import loads settings into the editor. Click Save all settings to apply. Auto-send is turned off. While sharing, saving also sends the presets to your other PCs (you are asked first). Exported files contain your prompts. Export before removing or reinstalling the extension."
+  },
+  "m327": {
+    "message": "Show diagnostics"
+  },
+  "m328": {
+    "message": "Diagnostics include only the version, stop stage, error code, candidate counts and sync state/history. Images, prompts, preset names and chat URLs are not included. Copy diagnostics replaces your clipboard contents, including any copied image."
+  },
+  "m329": {
+    "message": "{0} ({1})"
+  },
+  "m330": {
+    "message": "Keeping both would exceed 20 presets. Delete presets you no longer need first, or choose one side."
+  },
+  "m331": {
+    "message": "This exceeds the sync capacity. Reduce presets or prompt text. Saved on this PC."
+  },
+  "m332": {
+    "message": "The sync state on this PC was created by a newer PromptPalette. Update PromptPalette."
+  },
+  "m333": {
+    "message": "A sync update is waiting for your review. Check Sharing with other PCs in Settings."
+  },
+  "m334": {
+    "message": "Sharing is off. Turn the switch on first."
+  },
+  "m335": {
+    "message": "There is sync data from a newer PromptPalette. Update PromptPalette on this PC before sending. Saved on this PC."
+  },
+  "m336": {
+    "message": "This exceeds the sync capacity. Reduce presets or prompt text, or try Clean up old sync data under Advanced. Saved on this PC."
+  },
+  "m337": {
+    "message": "Saved on this PC, but writing to Chrome sync storage failed. Wait a while, then click Send unsent changes."
+  },
+  "m338": {
+    "message": "The presets on this PC changed while you were editing (for example, an update from another PC)."
+  },
+  "m339": {
+    "message": "This PC has not joined sharing, so nothing can be sent."
+  },
+  "m340": {
+    "message": "This PC is already sharing."
+  },
+  "m341": {
+    "message": "Shared data from another PC has arrived. Review it before starting to share."
+  },
+  "m342": {
+    "message": "Sharing cannot start because no preset has a prompt. Enter a preset and click Save all settings first."
+  },
+  "m343": {
+    "message": "This update has already been handled. The page has been refreshed."
+  },
+  "m344": {
+    "message": "this PC"
+  },
+  "m345": {
+    "message": "other PC"
+  },
+  "m346": {
+    "message": "Shared presets cannot be replaced because no preset on this PC has a prompt."
+  },
+  "m347": {
+    "message": "No shared presets have arrived to replace. On the first PC, use Start sharing with this PC's presets."
+  },
+  "m348": {
+    "message": "The selected backup was not found."
+  },
+  "m349": {
+    "message": "This PC has not joined sharing, so nothing can be cleaned up."
+  },
+  "m350": {
+    "message": "The current shared presets cannot be confirmed in this PC's sync storage, so nothing was cleaned up."
+  },
+  "m351": {
+    "message": "Could not load settings. Reopen the Settings page."
+  },
+  "m352": {
+    "message": "{0} presets ({1} with prompts)"
+  },
+  "m353": {
+    "message": "Sharing is off. Presets are saved on this PC only."
+  },
+  "m354": {
+    "message": "Waiting for presets from your other PCs. This PC does not send anything yet."
+  },
+  "m355": {
+    "message": "Presets from another PC have arrived. Because this PC also has presets, nothing was replaced automatically. Choose what to do below."
+  },
+  "m356": {
+    "message": "An update needs your review. See below."
+  },
+  "m357": {
+    "message": "Changes on this PC have not been sent to your other PCs yet."
+  },
+  "m358": {
+    "message": "Sharing presets with your other PCs."
+  },
+  "m359": {
+    "message": "To start sharing from this PC as the first one, click Start sharing with this PC's presets. On your second and later PCs, wait for the presets to arrive or click Check for updates. Anything you save while waiting stays on this PC."
+  },
+  "m360": {
+    "message": "Presets on this PC: {0}"
+  },
+  "m361": {
+    "message": "Last imported: {0}"
+  },
+  "m362": {
+    "message": "Last sent from this PC: {0} (written to Chrome sync storage; arrival on other PCs cannot be confirmed)"
+  },
+  "m363": {
+    "message": "Last checked: {0}"
+  },
+  "m364": {
+    "message": "Some data is still arriving. It will be checked automatically once complete."
+  },
+  "m365": {
+    "message": "Some sync data could not be read and was ignored."
+  },
+  "m366": {
+    "message": "There is sync data from a newer PromptPalette. Update PromptPalette on this PC."
+  },
+  "m367": {
+    "message": "The last send did not complete. The changes are saved on this PC."
+  },
+  "m368": {
+    "message": "Presets from another PC have arrived"
+  },
+  "m369": {
+    "message": "Changes from another PC overlap with changes on this PC. Both are kept."
+  },
+  "m370": {
+    "message": "An update that empties every prompt has arrived. It was not applied automatically."
+  },
+  "m371": {
+    "message": "An update that removes many presets (or empties prompts) has arrived. It was not applied automatically."
+  },
+  "m372": {
+    "message": "An update arrived from a PC using an old version of PromptPalette. It was not applied automatically."
+  },
+  "m373": {
+    "message": "Received: {0} / This PC: {1}"
+  },
+  "m374": {
+    "message": "Applying it removes {0} presets from this PC."
+  },
+  "m375": {
+    "message": "Received: {0}{1}"
+  },
+  "m376": {
+    "message": " (created {0} by the sending PC's clock)"
+  },
+  "m377": {
+    "message": "You have unsaved edits. This action resets the editor to the saved presets. Continue?"
+  },
+  "m378": {
+    "message": "This PC's current presets are kept in its backups. "
+  },
+  "m379": {
+    "message": "Use the received presets"
+  },
+  "m380": {
+    "message": "Replace this PC's presets with the received presets? {0}Continue?"
+  },
+  "m381": {
+    "message": "Keep both"
+  },
+  "m382": {
+    "message": "Add this PC's presets to the received presets and share the result? Continue?"
+  },
+  "m383": {
+    "message": "Use the received version"
+  },
+  "m384": {
+    "message": "Replace this PC's presets with the received version? {0}Continue?"
+  },
+  "m385": {
+    "message": "Use this PC's version"
+  },
+  "m386": {
+    "message": "Send this PC's version to your other PCs? The received version is kept in backups. Continue?"
+  },
+  "m387": {
+    "message": "Add the received presets to this PC's presets and share the result? Continue?"
+  },
+  "m388": {
+    "message": "Apply this update"
+  },
+  "m389": {
+    "message": "Apply this update? {0}Continue?"
+  },
+  "m390": {
+    "message": "Re-share this PC's presets"
+  },
+  "m391": {
+    "message": "Send this PC's presets to your other PCs and undo the received update? Continue?"
+  },
+  "m392": {
+    "message": "Apply the old-version PC's presets on this PC and send them to your other PCs with the new method? {0}Continue?"
+  },
+  "m393": {
+    "message": "Ignore"
+  },
+  "m394": {
+    "message": "Do not import this update from the old version? Continue?"
+  },
+  "m395": {
+    "message": "Saved. Written to Chrome sync storage for your other PCs (arrival on other PCs cannot be confirmed)."
+  },
+  "m396": {
+    "message": "Saved on this PC. Nothing was sent because this PC has not joined sharing yet."
+  },
+  "m397": {
+    "message": "Saved on this PC. Not sent yet because an update needs your review."
+  },
+  "m398": {
+    "message": "No new updates have reached this PC. This does not force a download from Google, so recent changes from other PCs may not have arrived yet."
+  },
+  "m399": {
+    "message": "The received update matches this PC's presets."
+  },
+  "m400": {
+    "message": "Imported the received update."
+  },
+  "m401": {
+    "message": "Imported the received presets and joined sharing."
+  },
+  "m402": {
+    "message": "There are no unsent changes."
+  },
+  "m403": {
+    "message": "Applied your choice on this PC."
+  },
+  "m404": {
+    "message": "Restored on this PC only. If sharing, nothing has been sent to your other PCs yet. To share it, click Send unsent changes."
+  },
+  "m405": {
+    "message": "Sharing is off."
+  },
+  "m406": {
+    "message": "Deleted {0} items of old sync data."
+  },
+  "m407": {
+    "message": "Saving the imported settings also sends them to your other PCs. Continue?"
+  },
+  "m408": {
+    "message": "This change removes many presets or empties prompts (presets removed: {0}). Your other PCs will ask before applying it. Save?"
+  },
+  "m409": {
+    "message": "The presets on this PC changed while you were editing (for example, an update from another PC). Save what is on this screen? The updated presets are kept in backups."
+  },
+  "m410": {
+    "message": "Not saved. Your edits remain on screen."
+  },
+  "m411": {
+    "message": "This settings file uses a newer format than this PromptPalette. Update PromptPalette."
+  },
+  "m412": {
+    "message": "Loaded into the editor. Auto-send is off. Click Save all settings to apply."
+  },
+  "m413": {
+    "message": "Copy diagnostics to the clipboard? Any image currently on the clipboard will be replaced. Continue?"
+  },
+  "m414": {
+    "message": "Sharing is on for this PC. Turning it on does not send anything."
+  },
+  "m415": {
+    "message": "Sharing is off for this PC. Presets on this PC are kept, and shared presets on other PCs are not deleted."
+  },
+  "m416": {
+    "message": " Your edits remain on screen; you will be asked before saving."
+  },
+  "m417": {
+    "message": "Click Save all settings first to save this PC's presets."
+  },
+  "m418": {
+    "message": "Start sharing with this PC's presets ({0})? Do not use this if another PC is already sharing. Continue?"
+  },
+  "m419": {
+    "message": "Sharing has started. On your other PCs, turn sharing on to import the presets once Chrome sync delivers them."
+  },
+  "m420": {
+    "message": "unknown"
+  },
+  "m421": {
+    "message": "Replace the shared presets with this PC's presets ({0})? Current shared presets: {1}. Presets removed: {2}. {3} updates waiting for review will not be imported and are kept in backups. Other PCs ask before applying if many presets are removed. Continue?"
+  },
+  "m422": {
+    "message": "Delete old updates already imported by this PC and sync data used by old versions? The current shared presets and this PC's presets are not deleted. PCs using old versions of PromptPalette will no longer receive this sync data. Continue?"
+  },
+  "m423": {
+    "message": "before saving"
+  },
+  "m424": {
+    "message": "before receiving"
+  },
+  "m425": {
+    "message": "before joining"
+  },
+  "m426": {
+    "message": "before using received version"
+  },
+  "m427": {
+    "message": "before merging"
+  },
+  "m428": {
+    "message": "before replacing"
+  },
+  "m429": {
+    "message": "before restoring"
+  },
+  "m430": {
+    "message": "before overwrite save"
+  },
+  "m431": {
+    "message": "before starting to share"
+  },
+  "m432": {
+    "message": "received version not imported"
+  },
+  "m433": {
+    "message": "when updating to 3.0.0"
+  },
+  "m434": {
+    "message": "previous backup from old version"
+  },
+  "m435": {
+    "message": "{0} · {1} · {2}{3}"
+  },
+  "m436": {
+    "message": " (protected)"
+  },
+  "m437": {
+    "message": "Restore the selected version on this PC only? The current presets are kept in backups. Unsaved edits are discarded. Continue?"
+  },
+  "m438": {
+    "message": "The presets on this PC were updated (for example, from another PC). Your edits remain on screen."
+  },
+  "m439": {
+    "message": "Could not load settings. Reopen the Settings page. If that does not help, restart Chrome."
+  },
+  "m440": {
+    "message": "Display language saved. Run messages use it from the next run."
+  },
+  "m441": {
+    "message": "Could not save the display language."
+  },
+  "m442": {
+    "message": "Code: {0}\nStage: {1}\nVersion: {2}\nAttach: {3} / Sent: {4}"
+  },
+  "m443": {
+    "message": "Details"
+  },
+  "m444": {
+    "message": "The chat composer was not found. Open a regular chat, reload the page and try again."
+  },
+  "m445": {
+    "message": "Gemini's aspect ratio control was not found. Choose the ratio manually in Gemini."
+  },
+  "m446": {
+    "message": "Could not attach the image automatically. The upload field could not be identified, so no image was attached."
+  },
+  "m447": {
+    "message": "File selection needs automatic attachment. Turn off \"Use a real Ctrl+V paste for clipboard attachments\" in Settings."
+  },
+  "m448": {
+    "message": "The image attachment was attempted once. The image may appear later. Check the composer."
+  },
+  "m449": {
+    "message": "The image attachment started, but the result could not be confirmed. Check the composer."
+  },
+  "m450": {
+    "message": "No image was attached, no text was entered and nothing was sent."
+  },
+  "m451": {
+    "message": "Reload the page and try again. If that does not help, copy the image to the clipboard and run from there, or attach it manually with the site's attach button."
+  },
+  "m452": {
+    "message": "Reload the page and try again. If that does not help, turn on \"Use a real Ctrl+V paste for clipboard attachments\" in Settings."
+  },
+  "m453": {
+    "message": "Check and remove the image in the composer, then run again. If it keeps failing, turn on \"Use a real Ctrl+V paste for clipboard attachments\" in Settings."
+  },
+  "m454": {
+    "message": "Text remains in the composer. Check it before reloading the page."
+  },
+  "m455": {
+    "message": "Stopped at {0}: {1}\n{2}\n{3}{4}\nRemaining content will not be deleted or overwritten.{5}"
   },
   "extensionName": {
     "message": "PromptPalette"
@@ -538,80 +910,5 @@
   },
   "fileCommand": {
     "message": "Choose an image file and run"
-  },
-  "m175": {
-    "message": "The switch is saved immediately on this PC. Turning it on does not upload presets. Updates are imported at startup, when opening Settings, before running and when received."
-  },
-  "m176": {
-    "message": "Import synced presets"
-  },
-  "m177": {
-    "message": "Import reads data already received by Chrome on this PC. It cannot force a download from Google. Unsaved edits are not replaced automatically."
-  },
-  "m178": {
-    "message": "More actions (initial upload, retry, restore)"
-  },
-  "m179": {
-    "message": "Upload presets from this PC"
-  },
-  "m180": {
-    "message": "Restore previous presets"
-  },
-  "m181": {
-    "message": "Upload replaces synced presets. Restore returns to the previous saved copy and turns sync off on this PC."
-  },
-  "m182": {
-    "message": "Sync writing is incomplete. Settings on this PC are preserved. Retry from More actions."
-  },
-  "m183": {
-    "message": "No synced data has arrived yet. Use More actions for the initial upload."
-  },
-  "m184": {
-    "message": "Cannot import synced data. If data is incomplete, it will be checked again on arrival. Settings on this PC are preserved."
-  },
-  "m185": {
-    "message": "Synced data has changed. Export your edits, import synced presets, then save again."
-  },
-  "m186": {
-    "message": "Saved on this PC, but writing to Chrome sync storage failed. Retry from More actions."
-  },
-  "m187": {
-    "message": "There are no presets to restore."
-  },
-  "m188": {
-    "message": "Sync is on: saved preset changes are shared and received updates are imported automatically."
-  },
-  "m189": {
-    "message": "Saved on this PC and written to Chrome sync storage. Chrome handles delivery to other PCs."
-  },
-  "m190": {
-    "message": "Enabling sync and importing discards unsaved preset and PC setting edits. Continue?"
-  },
-  "m191": {
-    "message": "Sync is on for this PC. Enabling it alone does not upload presets."
-  },
-  "m192": {
-    "message": "Sync is off for this PC."
-  },
-  "m193": {
-    "message": "Discard unsaved edits or pending changes and replace them with synced presets?"
-  },
-  "m194": {
-    "message": "Imported synced presets."
-  },
-  "m195": {
-    "message": "There are no updates to import."
-  },
-  "m196": {
-    "message": "Turn on sync, save the presets in this editor and replace synced presets? Use for initial upload or retry. Continue?"
-  },
-  "m197": {
-    "message": "Restore presets from before the last save or import and turn sync off on this PC? Unsaved edits will be discarded. Continue?"
-  },
-  "m198": {
-    "message": "Restored previous presets. Sync is off."
-  },
-  "m199": {
-    "message": "Synced data has changed. Your edits are preserved. Use the import button to apply the update."
   }
 }
