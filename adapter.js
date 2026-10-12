@@ -47,14 +47,33 @@
   A.userMessages = () => [...document.querySelectorAll("[data-chatgpt-search-message-ids]")]
     .filter(e => e.querySelector("[data-user-message-bubble='true']"));
   A.messageIds = () => new Set(A.userMessages().map(e => e.getAttribute("data-chatgpt-search-message-ids")));
-  A.sentMessageVisible = (prompt, beforeIds) => A.userMessages().some(e => {
-    const id = e.getAttribute("data-chatgpt-search-message-ids");
-    const body = e.querySelector("[data-markdown-text-tone='user-message']");
-    const images = [...e.querySelectorAll("img")].filter(img => A.visible(img) &&
-      /^(ユーザーの添付画像|User uploaded image|Uploaded image)$/i.test(img.alt || ""));
-    return id && !beforeIds.has(id) && body && A.visible(body) &&
-      A.readEditorText(body).trim() === prompt && images.length === 1;
-  });
+  // 表示上の空白・改行の揺れだけを吸収する。
+  A.normalize = text => text.replace(/\r\n/g, "\n").replace(/[ \t\u00a0]+/g, " ").replace(/ *\n */g, "\n").replace(/\n{2,}/g, "\n").trim();
+  // 2026-10-11の実画面では、本文の data-markdown-text-tone が無くなり、吹き出しの中は属性のないdivだけだった。
+  // 本文は旧属性があればそこから、なければ吹き出し全体から読み、モード名などの表示が加わっても一致とみなせるよう包含で比べる。
+  // 画像はaltの文言に依存せず、新しいメッセージ内に表示された画像の有無で確認する。
+  A.sentStatus = (prompt, beforeIds) => {
+    const fresh = A.userMessages().filter(e => {
+      const id = e.getAttribute("data-chatgpt-search-message-ids");
+      return id && !beforeIds.has(id);
+    });
+    const expected = A.normalize(prompt);
+    const status = { fresh: fresh.length, textMatches: false, images: 0, ok: false };
+    for (const e of fresh) {
+      const body = e.querySelector("[data-markdown-text-tone='user-message']") || e.querySelector("[data-user-message-bubble='true']");
+      const textMatches = !!body && A.visible(body) && !!expected && A.normalize(A.readEditorText(body)).includes(expected);
+      const images = [...e.querySelectorAll("img")].filter(img => A.visible(img) &&
+        (/^(ユーザーの添付画像|User uploaded image|Uploaded image)$/i.test(img.alt || "") || img.getBoundingClientRect().width >= 32)).length;
+      status.textMatches ||= textMatches; status.images = Math.max(status.images, images);
+      if (textMatches && images >= 1) status.ok = true;
+    }
+    return status;
+  };
+  A.sentMessageVisible = (prompt, beforeIds) => A.sentStatus(prompt, beforeIds).ok;
+  A.sentDiagnostic = (prompt, beforeIds) => {
+    const status = A.sentStatus(prompt, beforeIds);
+    return t`新しいメッセージ=${status.fresh}件、本文一致=${status.textMatches ? "OK" : "NG"}、画像=${status.images}枚`;
+  };
   A.disabled = e => !e || e.disabled || e.getAttribute("aria-disabled") === "true" || e.getAttribute("contenteditable") === "false";
   A.generating = () => A.buttons(document).some(e => /^(停止|生成を停止|回答の生成を停止|Stop generating|Stop streaming|Stop)$/i.test(A.label(e)) || e.getAttribute("data-testid") === "stop-button");
   A.send = () => A.unique(A.buttons(A.root() || document.createElement("div")).filter(e =>

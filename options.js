@@ -279,6 +279,9 @@ chrome.storage.onChanged.addListener(async (changes, area) => {
   } catch { /* 保存済みの表示と編集内容を保持する。 */ }
 });
 $("version").textContent = chrome.runtime.getManifest().version;
+// LICENSEは配布ZIPに同梱する。同梱していない開発用フォルダーでは公開リポジトリの全文へ案内する。
+Promise.resolve(globalThis.fetch?.("LICENSE")).then(response => { if (!response?.ok) throw new Error(); })
+  .catch(() => { $("license-link").href = "https://github.com/ja1bus/PromptPalette/blob/main/LICENSE"; });
 globalThis.PPI18n.init().then(() => { globalThis.PPI18n.apply(); $("language").value = globalThis.PPI18n.preference; return S.load(); }).then(async value => { view = value; render(); $("last-notice").textContent = (await chrome.storage.local.get("lastNotice")).lastNotice || t("操作記録はありません。"); })
   .catch(() => { $("saved").textContent = t("設定を読み込めません。設定画面を開き直してください。解決しない場合はChromeを再起動してください。"); });
 

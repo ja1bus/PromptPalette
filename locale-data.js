@@ -1198,5 +1198,17 @@ globalThis.PPMessageCatalog = {
   "m455": {
     "ja": "{0}で停止：{1}\n{2}\n{3}{4}\n残った内容を削除・上書きしません。{5}",
     "en": "Stopped at {0}: {1}\n{2}\n{3}{4}\nRemaining content will not be deleted or overwritten.{5}"
+  },
+  "m456": {
+    "ja": "新しいメッセージ={0}件、本文一致={1}、画像={2}枚",
+    "en": "New messages={0}, text match={1}, images={2}"
+  },
+  "m457": {
+    "ja": "送信操作は完了しました。会話への反映を自動では確認できませんでした（サイトの画面が変わった可能性があります）。結果を会話画面で確認してください。自動で再送はしません。{0}",
+    "en": "The send action was completed, but the message could not be confirmed in the conversation automatically (the site's layout may have changed). Check the result in the conversation. It will not be sent again automatically.{0}"
+  },
+  "m458": {
+    "ja": "ソースコード（GitHub）",
+    "en": "Source code (GitHub)"
   }
 };

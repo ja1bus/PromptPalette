@@ -32,6 +32,22 @@ test("送信確認は新規ID・本文一致・添付画像をすべて要求す
   assert.equal(A.sentMessageVisible("送信本文", new Set()), false);
   Object.assign(A, previous);
 });
+test("本文の属性がない現在の画面（2026-10-11）でも、吹き出しの本文と表示画像で送信を確認する", () => {
+  // 吹き出しの中は属性のないdivだけ。表示上の改行・空白の揺れや、前後のラベルがあっても本文を含めば一致とする。
+  const bubble = node("DIV", node("DIV", text("画像を作成する")), node("DIV", text("一行目 \n\n  二行目")));
+  const photo = { alt: "", getBoundingClientRect: () => ({ width: 240 }) }, icon = { alt: "", getBoundingClientRect: () => ({ width: 16 }) };
+  let images = [photo, icon];
+  const message = { getAttribute: () => "new", querySelector: s => s.includes("data-user-message-bubble") ? bubble : null, querySelectorAll: () => images };
+  const previous = { userMessages: A.userMessages, visible: A.visible };
+  A.userMessages = () => [message]; A.visible = () => true;
+  assert.deepEqual({ ...A.sentStatus("一行目\n二行目", new Set()) }, { fresh: 1, textMatches: true, images: 1, ok: true });
+  assert.equal(A.sentMessageVisible("違う本文", new Set()), false);
+  images = [icon];
+  assert.deepEqual({ ...A.sentStatus("一行目\n二行目", new Set()) }, { fresh: 1, textMatches: true, images: 0, ok: false });
+  assert.match(A.sentDiagnostic("一行目\n二行目", new Set()), /新しいメッセージ=1件、本文一致=OK、画像=0枚/);
+  assert.equal(A.sentStatus("一行目\n二行目", new Set(["new"])).fresh, 0);
+  Object.assign(A, previous);
+});
 test("実画面の画像作成タグを本文として数えず、続く本文は保持する", () => {
   assert.equal(A.readEditorText(node("DIV", node("P", imagePill(), text(" ")))).trim(), "");
   assert.equal(A.readEditorText(node("DIV", node("P", imagePill(), text(" 指示文")))).trim(), "指示文");

@@ -19,7 +19,7 @@
   // 利用者向けの文と、診断用の安定したコードを分けて持つ。
   const fail = (code, message, extra = {}) => Object.assign(new Error(message), { code, ...extra });
   function setStage(id, label) { stageId = id; stage = label; }
-  function show(text, { error = false, done = false } = {}) {
+  function show(text, { error = false, done = false, warning = false } = {}) {
     clearTimeout(dismissTimer);
     if (!panel) {
       const host = document.createElement("div");
@@ -42,7 +42,7 @@
     button(t("設定"), () => chrome.runtime.sendMessage({ type: "CGCI_OPTIONS" }).catch(() => {}));
     if (running) button(t("中止"), () => controller.abort(fail("PP-CANCELLED", t("ユーザーが中止しました。"))));
     else button(t("閉じる"), closePanel);
-    if (error && failure) {
+    if ((error || warning) && failure) {
       // 詳しい情報は既定で閉じる。本文・画像・URLは含めない。
       const info = document.createElement("pre");
       info.hidden = true; info.style.cssText = "white-space:pre-wrap;font:12px/1.5 monospace;background:#f3f3f3;padding:8px;border-radius:6px";
@@ -55,10 +55,10 @@
       guarded = false;
       show(t("実行ロックを解除しました。再実行には、残った入力文と添付を自分で処理し、空の入力欄にしてください。"));
     });
-    chrome.runtime.sendMessage({ type: "CGCI_STATUS", text, error, done, stage, stageId, site, code: error ? failure?.code : undefined,
-      attach, sent, inputs: error ? failure?.inputs : undefined }).catch(() => {});
+    chrome.runtime.sendMessage({ type: "CGCI_STATUS", text, error, done, warning, stage, stageId, site, code: error || warning ? failure?.code : undefined,
+      attach, sent, inputs: error ? failure?.inputs : undefined, check: warning ? failure?.check : undefined }).catch(() => {});
     // 完了通知を閉じても、下書き保護のロックは維持する。エラーは確認まで残す。
-    if (done && !error) dismissTimer = setTimeout(closePanel, 4000);
+    if (done && !error && !warning) dismissTimer = setTimeout(closePanel, 4000);
   }
   function button(text, handler) {
     const b = document.createElement("button");
@@ -348,10 +348,24 @@
         // ChatGPTの一時URL→確定URLの遷移を送信失敗と誤判定しない。
         clearInterval(navigationTimer);
         sent = true; guarded = true; A.send().click();
-        await wait(() => {
-          if (location.origin !== new URL(url).origin) throw fail("PP-SEND-NAVIGATION", t("送信後に対象サイト以外へ移動しました。送信履歴を確認してください。"));
-          return A.sentMessageVisible(prompt, beforeIds);
-        }, 15000, () => t("今回の画像と本文が新しい会話メッセージに反映されたことを確認できませんでした。送信履歴を確認してください。"));
+        try {
+          await wait(() => {
+            if (location.origin !== new URL(url).origin) throw fail("PP-SEND-NAVIGATION", t("送信後に対象サイト以外へ移動しました。送信履歴を確認してください。"));
+            return A.sentMessageVisible(prompt, beforeIds);
+          }, 30000);
+        } catch (error) {
+          if (controller.signal.aborted || error.code !== "PP-TIMEOUT") throw error;
+          // 送信操作は済んでいる。反映を読み取れないだけの場合はエラーにせず、確認を促す注意として表示する。
+          const check = A.sentStatus?.(prompt, beforeIds);
+          let detail = "";
+          try { detail = A.sentDiagnostic ? t`\n確認結果：${A.sentDiagnostic(prompt, beforeIds)}` : ""; } catch { /* 表示用の補足のみ */ }
+          // 入力欄が空なら守るべき下書きはないため、次の実行をロックしない。
+          guarded = !!(A.text().trim() || A.hasAttachment());
+          failure = { code: "PP-SEND-UNCONFIRMED", stageId, attach, sent, check };
+          running = false;
+          show(t`送信操作は完了しました。会話への反映を自動では確認できませんでした（サイトの画面が変わった可能性があります）。結果を会話画面で確認してください。自動で再送はしません。${detail}`, { done: true, warning: true });
+          return;
+        }
         guarded = false;
         running = false; show(t("送信操作後の画面変化を確認しました。画像生成の結果は対象サイトで確認してください。"), { done: true });
       } else {
@@ -373,8 +387,9 @@
           : t("ページを再読み込みして再試行してください。解決しない場合は、設定で「クリップボード添付に実際のCtrl+Vを使う」をONにしてください。"))
         : attach !== "none" && !sent && ["PP-TIMEOUT", "PP-UPLOAD-FAILED"].includes(code) && source !== "file"
           ? t("入力欄の画像を確認・削除してから再実行してください。続けて失敗する場合は、設定で「クリップボード添付に実際のCtrl+Vを使う」をONにしてください。") : "";
-      const draft = A.text().trim() ? t("入力文が残っています。ページを再読み込みする前に確認してください。") : t("現在、入力文は検出されていません。");
-      show(t`${stage}で停止：${error.message}\n${remains}\n${draft}${A.modeSelected() ? t("画像作成モードは選択済みです。") : changedMode ? t("モード選択を試みました。画面を確認してください。") : ""}\n残った内容を削除・上書きしません。${hint ? `\n${hint}` : ""}`, { error: true });
+      // 送信後は入力欄が空になりモードのタグも消えるため、入力欄とモードの状態は表示しない。
+      const draft = sent ? "" : A.text().trim() ? t("入力文が残っています。ページを再読み込みする前に確認してください。") : t("現在、入力文は検出されていません。");
+      show(t`${stage}で停止：${error.message}\n${remains}\n${draft}${sent ? "" : A.modeSelected() ? t("画像作成モードは選択済みです。") : changedMode ? t("モード選択を試みました。画面を確認してください。") : ""}\n残った内容を削除・上書きしません。${hint ? `\n${hint}` : ""}`, { error: true });
       console.warn(t("[CGCI] 停止段階:"), stageId, code); // 画像やプロンプトはログへ出さない。
     } finally {
       clearTimeout(total); clearInterval(navigationTimer); controller.abort();

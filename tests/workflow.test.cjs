@@ -37,6 +37,8 @@ function fixture(overrides = {}) {
     insert: text => { state.text = state.inputMismatch ? text + "余分な文" : text; }, send: () => send,
     messageIds: () => new Set(),
     sentMessageVisible: () => state.sendCalls === 1 && !state.noReceipt && !state.wrongConversation,
+    sentStatus: () => ({ fresh: state.wrongConversation ? 0 : 1, textMatches: false, images: 1, ok: false }),
+    sentDiagnostic: () => "新しいメッセージ=1件、本文一致=NG、画像=1枚",
     ratioSelected: r => !r || state.selectedRatio === r,
     ratioButton: () => ({ click() {} }), ratioItem: r => ({ click() { state.selectedRatio = r; } }),
     promptDiagnostic: () => "本文一致=NG、送信可能=OK、画像作成モード=OK、添付完了=OK"
@@ -64,7 +66,7 @@ function fixture(overrides = {}) {
     chrome: { i18n: { getUILanguage: () => state.locale || "ja" }, runtime: { id: "fixture", onMessage: { addListener(fn) { listener = fn; } },
       sendMessage: async message => { if (message.type === "CGCI_STATUS") state.statuses.push(message); }, getManifest: () => ({ version: "3.0.0" }) },
       storage: { local: { get: async () => ({ prompt: state.noPrompt ? "" : "一行目\n二行目", autoSend: !!state.autoSend, manualPaste: false }) } } },
-    setTimeout: (fn, ms) => { const id = setTimeout(fn, (state.neverReady && ms === 45000) || (state.noInput && ms === 3000) || (state.inputMismatch && ms === 10000) || ((state.noReceipt || state.wrongConversation) && ms === 15000) ? 30 : ms); timers.add(id); return id; },
+    setTimeout: (fn, ms) => { const id = setTimeout(fn, (state.neverReady && ms === 45000) || (state.noInput && ms === 3000) || (state.inputMismatch && ms === 10000) || ((state.noReceipt || state.wrongConversation) && ms === 30000) ? 30 : ms); timers.add(id); return id; },
     clearTimeout: id => { timers.delete(id); clearTimeout(id); },
     setInterval: (fn, ms) => { const id = setInterval(fn, ms); timers.add(id); return id; },
     clearInterval: id => { timers.delete(id); clearInterval(id); },
@@ -75,7 +77,7 @@ function fixture(overrides = {}) {
     vm.runInContext(fs.readFileSync(path.join(__dirname, "../i18n.js"), "utf8"), context);
   }
   vm.runInContext(source, context);
-  const start = () => listener({ type: "CGCI_START", source: state.source || "clipboard" }, { id: "fixture" }, () => {});
+  const start = (reply = () => {}) => listener({ type: "CGCI_START", source: state.source || "clipboard" }, { id: "fixture" }, reply);
   const finish = async () => {
     for (let i = 0; i < 200; i++) {
       if (state.statuses.some(s => s.done || s.error)) return;
@@ -111,17 +113,33 @@ test("新規チャットの送信による会話URLへの変更は正常終了�
 }));
 test("別会話で今回の送信メッセージを検出できなければ停止し再送しない", () => scenario({ autoSend: true, wrongConversation: true,
   startUrl: "https://chatgpt.com/c/original", sendUrl: "https://chatgpt.com/c/another" }, ({ state }) => {
+  const last = state.statuses.at(-1);
   assert.equal(state.sendCalls, 1);
-  assert.equal(state.statuses.at(-1).error, true);
-  assert.match(state.statuses.at(-1).text, /反映されたことを確認できません/);
+  assert.equal(last.error, false); assert.equal(last.warning, true); assert.equal(last.code, "PP-SEND-UNCONFIRMED");
+  assert.match(last.text, /会話への反映を自動では確認できませんでした/);
 }));
 test("既存URLが送信後に変わっても今回の画像と本文の反映で正常終了する", () => scenario({ autoSend: true,
   startUrl: "https://chatgpt.com/c/temporary", sendUrl: "https://chatgpt.com/c/canonical" }, ({ state }) => {
   assert.equal(state.sendCalls, 1); assert.equal(state.statuses.at(-1).done, true);
 }));
 test("入力欄が空になっても送信メッセージを確認できなければ成功としない", () => scenario({ autoSend: true, noReceipt: true }, ({ state }) => {
-  assert.equal(state.sendCalls, 1); assert.equal(state.statuses.at(-1).error, true);
+  const last = state.statuses.at(-1);
+  assert.equal(state.sendCalls, 1); assert.equal(last.done, true); assert.equal(last.warning, true); assert.notEqual(last.error, true);
+  // 送信後は入力欄の状態・モード選択の案内を出さず、確認結果の件数だけを示す。
+  assert.doesNotMatch(last.text, /モード選択を試みました|入力文は検出されていません/);
+  assert.match(last.text, /本文一致=NG/); assert.deepEqual({ ...last.check }, { fresh: 1, textMatches: false, images: 1, ok: false });
 }));
+test("送信後の確認ができなくても入力欄が空なら次の実行をロックしない", async () => {
+  const f = fixture({ autoSend: true, noReceipt: true });
+  try {
+    f.start(); await f.finish();
+    Object.assign(f.state, { generating: false, noReceipt: false, sendCalls: 0 }); f.state.statuses.length = 0;
+    let accepted;
+    f.start(reply => { accepted = reply.accepted; });
+    assert.equal(accepted, true);
+    await f.finish(); assert.equal(f.state.sendCalls, 1);
+  } finally { f.close(); }
+});
 for (const [name, options] of [["設定なし", { noPrompt: true }], ["画像なし", { noImage: true }],
   ["既存入力文", { text: "既存文" }], ["既存添付", { attached: true }], ["生成中", { generating: true }]]) {
   test(`${name}では添付・送信しない`, () => scenario(options, ({ state }) => {

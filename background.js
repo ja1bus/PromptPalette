@@ -37,10 +37,14 @@ function diagnostic(message, sender) {
   if (message.inputs && typeof message.inputs === "object")
     for (const key of ["total", "camera", "image", "media", "generic", "other", "busy"])
       if (Number.isInteger(message.inputs[key]) && message.inputs[key] >= 0 && message.inputs[key] < 100) inputs[key] = message.inputs[key];
+  // 送信後の確認結果は件数と一致の有無だけ。
+  const count = value => Number.isInteger(value) && value >= 0 && value < 100 ? value : undefined;
+  const check = message.check && typeof message.check === "object"
+    ? { fresh: count(message.check.fresh), textMatches: message.check.textMatches === true, images: count(message.check.images) } : undefined;
   return { version: chrome.runtime.getManifest?.().version, site: new URL(sender.url).hostname, stage: message.stage.slice(0, 80),
     stageId: pick(message.stageId, /^[a-z-]{1,30}$/), code: pick(message.code, /^PP-[A-Z0-9-]{1,40}$/),
-    attach: pick(message.attach, /^(none|unknown|attempted)$/), sent: message.sent === true, inputs,
-    error: !!message.error, done: !!message.done, time: new Date().toISOString() };
+    attach: pick(message.attach, /^(none|unknown|attempted)$/), sent: message.sent === true, inputs, check,
+    error: !!message.error, warning: !!message.warning, done: !!message.done, time: new Date().toISOString() };
 }
 chrome.action.onClicked.addListener(tab => void start(tab));
 chrome.commands.onCommand.addListener(async command => {
@@ -65,7 +69,7 @@ chrome.runtime.onMessage.addListener((message, sender, reply) => {
   }
   if (message?.type === "CGCI_STATUS" && typeof message.text === "string") {
     if (typeof message.stage === "string") chrome.storage.local.set({ diagnostic2: diagnostic(message, sender) }).catch(() => {});
-    notice(sender.tab.id, message.text.slice(0, 2000), message.error ? "!" : message.done ? "✓" : "…")
+    notice(sender.tab.id, message.text.slice(0, 2000), message.error ? "!" : message.warning ? "?" : message.done ? "✓" : "…")
       .then(() => reply({ ok: true })).catch(() => reply({ ok: false }));
     return true;
   }
