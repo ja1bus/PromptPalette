@@ -41,7 +41,7 @@ This GitHub repository does not distribute packaged extensions (ZIP or CRX).
 
 See the user guide for details.
 
-- User guide: https://www.iwanaga.net/promptpalette/en/manual/
+- User guide: https://www.ja1bus.com/promptpalette/en/manual/
 
 ## Loading from source and testing
 
@@ -96,9 +96,9 @@ This software is provided "as is", without warranty of any kind, express or impl
 
 ## Links
 
-- Web page: https://www.iwanaga.net/promptpalette/en/
-- User guide: https://www.iwanaga.net/promptpalette/en/manual/
-- Changelog: https://www.iwanaga.net/promptpalette/en/changelog/
-- Privacy policy: https://www.iwanaga.net/promptpalette/en/privacy/
+- Web page: https://www.ja1bus.com/promptpalette/en/
+- User guide: https://www.ja1bus.com/promptpalette/en/manual/
+- Changelog: https://www.ja1bus.com/promptpalette/en/changelog/
+- Privacy policy: https://www.ja1bus.com/promptpalette/en/privacy/
 - Chrome Web Store: https://chromewebstore.google.com/detail/promptpalette/fefcnpbglobpebdlognmaeddddpnnpjh
-- Contact: support@iwanaga.net
+- Contact: contact@ja1bus.com

@@ -41,7 +41,7 @@ PromptPalette は、ChatGPT と Gemini で画像を作るときの準備をま�
 
 詳しくは取扱説明書をご覧ください。
 
-- 取扱説明書: https://www.iwanaga.net/promptpalette/manual/
+- 取扱説明書: https://www.ja1bus.com/promptpalette/manual/
 
 ## ソースから読み込む・テストする
 
@@ -96,9 +96,9 @@ Copyright (c) 2026 ja1bus（© ja1bus）
 
 ## 関連リンク
 
-- Web ページ: https://www.iwanaga.net/promptpalette/
-- 取扱説明書: https://www.iwanaga.net/promptpalette/manual/
-- 更新履歴: https://www.iwanaga.net/promptpalette/changelog/
-- プライバシーポリシー: https://www.iwanaga.net/promptpalette/privacy/
+- Web ページ: https://www.ja1bus.com/promptpalette/
+- 取扱説明書: https://www.ja1bus.com/promptpalette/manual/
+- 更新履歴: https://www.ja1bus.com/promptpalette/changelog/
+- プライバシーポリシー: https://www.ja1bus.com/promptpalette/privacy/
 - Chrome ウェブストア: https://chromewebstore.google.com/detail/promptpalette/fefcnpbglobpebdlognmaeddddpnnpjh
-- お問い合わせ: support@iwanaga.net
+- お問い合わせ: contact@ja1bus.com
